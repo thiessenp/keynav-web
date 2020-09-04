@@ -1,0 +1,20 @@
+{
+  "name": "keynav-web",
+  "version": "1.0.0",
+  "description": "keyboard navigation for web based UIs",
+  "main": "keynav-web.js",
+  "module":  "keynav-web.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thiessenp/keynav-web.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thiessenp/keynav-web/issues"
+  },
+  "homepage": "https://github.com/thiessenp/keynav-web#readme"
+}

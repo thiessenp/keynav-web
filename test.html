@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <title>test</title>
+</head>
+<body>
+
+    <h1>Keynav Tests</h1>
+
+    <button id="xtest" data-hotkeys-web="x">Hotkey <key>x</key> triggered me</button>
+
+    <button id="ctrlxtest" data-hotkeys-web="ctrl+x">Hotkey <key>ctrl+x</key> triggered me</button>
+
+    <!-- CORS... must load file on server for modules (ES does XHR req for mods) -->
+    <script type="module" src="./keynav-web.js"></script>
+
+    <!-- type=module or get error Cannot use import statement outside a module -->
+    <script type="module">
+        import KeynavWeb from './keynav-web.js';
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            KeynavWeb.initHotkeys();
+            
+            console.log(KeynavWeb)
+        
+            // "Click" Handlers for Triggered Hotkeys
+            xtest.addEventListener('click', () => {
+                alert('x keyed and triggered me -or- i was clicked')
+            });
+            ctrlxtest.addEventListener('click', () => {
+                alert('ctrl+x keyed and triggered me -or- i was clicked')
+            });
+        });
+    </script>
+</body>
+</html>
