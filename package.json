@@ -1,9 +1,9 @@
 {
   "name": "keynav-web",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "keyboard navigation for web based UIs",
-  "main": "keynav-web.js",
-  "module":  "keynav-web.js",
+  "main": "index.js",
+  "module":  "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
