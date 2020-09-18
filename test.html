@@ -8,22 +8,39 @@
 
     <h1>Keynav Tests</h1>
 
-    <button id="xtest" data-hotkeys-web="x">Hotkey <key>x</key> triggered me</button>
+    <section aria-labelledby="hotkeytest-label">
+        <h1 id="hotkeytest-label">Hotkey Test</h1>
+        <button id="xtest" data-knw-hotkey="x">Hotkey <key>x</key> triggered me</button>
+        <button id="ctrlxtest" data-knw-hotkey="ctrl+x">Hotkey <key>ctrl+x</key> triggered me</button>
+    </section>
 
-    <button id="ctrlxtest" data-hotkeys-web="ctrl+x">Hotkey <key>ctrl+x</key> triggered me</button>
+    <section aria-labelledby="keynavtest-label">
+        <h1 id="keynavtest-label">Keynav Tests</h1>
+        <div>
+            <h2 id="keynavUpDown-label">List of Items - nav with up or down keys</h2>
+            <ul data-knw-keynav-list tabindex="0" id="keynavUpDown-list" aria-labelledby="keynavUpDown-label">
+                <li tabindex="-1">List Item A</li>
+                <li tabindex="-1">List Item B</li>
+                <li tabindex="-1">List Item C</li>
+                <li tabindex="-1">List Item D</li>
+            </ul>
+            <output aria-label="List item activated" aria-live="polite" aria-relevant="additions" id="keynavUpDown-output"/>
+        </div>
+    </section>
 
     <!-- CORS... must load file on server for modules (ES does XHR req for mods) -->
-    <script type="module" src="./keynav-web.js"></script>
+    <script type="module" src="./index.js"></script>
 
     <!-- type=module or get error Cannot use import statement outside a module -->
     <script type="module">
-        import KeynavWeb from './keynav-web.js';
+        import knw from './index.js';
         
         document.addEventListener('DOMContentLoaded', function() {
-            KeynavWeb.initHotkeys();
+            console.log(knw)
+
+            // Add hotkeys (searched from DOM)
+            knw.hotkeys.init();
             
-            console.log(KeynavWeb)
-        
             // "Click" Handlers for Triggered Hotkeys
             xtest.addEventListener('click', () => {
                 alert('x keyed and triggered me -or- i was clicked')
@@ -31,7 +48,30 @@
             ctrlxtest.addEventListener('click', () => {
                 alert('ctrl+x keyed and triggered me -or- i was clicked')
             });
+
+            // Add keynav for lists (searched from DOM)
+            knw.keynav.init();
+
+            // Set some behavior for when a list element is activated
+            const listEl = document.querySelector('#keynavUpDown-list');
+            const childrenElArr = [...listEl.children];
+            const outputEl = document.querySelector('#keynavUpDown-output');
+            childrenElArr.forEach(el => {
+                el.addEventListener('focus', e => {
+                    console.log('focus', e);
+                });
+                el.addEventListener('click', e => {
+                    console.log('click', e.target.textContent);
+                    updateOutput(outputEl, 'You activated ' + e.target.textContent);
+                });
+            });
         });
+
+        function updateOutput(el, content) { 
+            // innerHtml only updated DOM not text it seems?
+            // el.innerHtml = content;
+            el.textContent = content;
+        }
     </script>
 </body>
 </html>
