@@ -19,7 +19,7 @@
  * <h2 id="keynavUpDown-label">List of Items - nav with up or down keys</h2>
  * <ul data-knw-keynav-list tabindex="0" id="keynavUpDown-list" aria-labelledby="keynavUpDown-label">
  *  <li tabindex="-1">List Item A</li>
- *  <li tabindex="-1">List Item B</li>
+ *  <li tabindex="-1" data-knw-keynav-list-active>List Item B</li>
  *  <li tabindex="-1">List Item C</li>
  * </ul>
  * ```
@@ -27,10 +27,13 @@
 
 const Keynav = {};
 
+Keynav.dataSelectorList = 'data-knw-keynav-list';
+Keynav.dataSelectorListItemActive = 'data-knw-keynav-list-active';
+
 Keynav.init = function(el) {
     // Note: isEnabled not checked here so can easily enable it. Add check if problems.
-    var containerEl = el || document;
-    var keynavEls = containerEl.querySelectorAll('[data-knw-keynav-list]');
+    const containerEl = el || document;
+    const keynavEls = containerEl.querySelectorAll(`[${Keynav.dataSelectorList}]`);
 
     keynavEls.forEach(keynavListEl => {
         addKeynavToList(keynavListEl);
@@ -79,18 +82,21 @@ function getKeyByEvent(e) {
  */
 function addKeynavToList(listEl) {
     if (!listEl) return;
-    
-    var active = null;
-    listEl.addEventListener('keydown', (e) => {
+
+    listEl.addEventListener('keydown', function(e) {
         // Avoid e.preventDefault(); here, or keys like tab stop working..
 
         const key = getKeyByEvent(e);
+        
+        // Data attribute used to track active to make tracking state easier
+        let active = getActive(this);
 
         if (key === 'Enter' || key === 'Space') {
             e.preventDefault();
             // Inactive list so enter at the first list item
             if (!active) {
-                active = listEl.firstElementChild;
+                active = this.firstElementChild;
+                setActive(this, active);
                 active.focus();
             // Active list so activate (browser click on) the current element
             } else {
@@ -100,20 +106,21 @@ function addKeynavToList(listEl) {
         else if (key === 'ArrowDown' || key === 'ArrowRight') {		
             e.preventDefault();	
             if (!active) {
-                active = listEl.firstElementChild;
+                active = this.firstElementChild;
             }
             else if (active.nextElementSibling) {
                 active = active.nextElementSibling;
             }
 
             if (active) { 
+                setActive(this, active);
                 active.focus();
             }
         }
         else if (key === 'ArrowUp' || key === 'ArrowLeft') {
             e.preventDefault();
             if (!active) {
-                active = listEl.firstElementChild;
+                active = this.firstElementChild;
             } 
             else if (active.previousElementSibling) {
                 active = active.previousElementSibling;
@@ -121,13 +128,32 @@ function addKeynavToList(listEl) {
             }
 
             if (active) { 
+                setActive(this, active);
                 active.focus();
             }
         }
         else if (key === 'Escape') {
             e.preventDefault();
             active = null;
-            listEl.focus();
+            // reset focus back on the list container to "show" left list
+            this.focus();
         }
     });
+}
+
+function getActive(listEl) {
+    if (!listEl) return;
+
+    return listEl.querySelector(`[${Keynav.dataSelectorListItemActive}]`);
+}
+
+function setActive(listEl, listItemEl) {
+    if (!listEl || !listItemEl) return;
+
+    // remove old active el attribute
+    const oldActiveEl = listEl.querySelector(`[${Keynav.dataSelectorListItemActive}]`);
+    oldActiveEl && oldActiveEl.removeAttribute(Keynav.dataSelectorListItemActive);
+
+    // set new active el attribute
+    listItemEl.setAttribute(Keynav.dataSelectorListItemActive, '');
 }

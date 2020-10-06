@@ -17,7 +17,7 @@
     <section aria-labelledby="keynavtest-label">
         <h1 id="keynavtest-label">Keynav Tests</h1>
         <div>
-            <h2 id="keynavUpDown-label">List of Items - nav with up or down keys</h2>
+            <h2 id="keynavUpDown-label">List of Items 1 - nav with up or down keys</h2>
             <ul data-knw-keynav-list tabindex="0" id="keynavUpDown-list" aria-labelledby="keynavUpDown-label">
                 <li tabindex="-1">List Item A</li>
                 <li tabindex="-1">List Item B</li>
@@ -25,6 +25,16 @@
                 <li tabindex="-1">List Item D</li>
             </ul>
             <output aria-label="List item activated" aria-live="polite" aria-relevant="additions" id="keynavUpDown-output"/>
+        </div>
+        <div>
+            <h2 id="keynavUpDown2-label">List of Items 2 - check multiple lists work</h2>
+            <ul data-knw-keynav-list tabindex="0" id="keynavUpDown2-list" aria-labelledby="keynavUpDown2-label">
+                <li tabindex="-1">List Item A</li>
+                <li tabindex="-1">List Item B</li>
+                <li tabindex="-1">List Item C</li>
+                <li tabindex="-1">List Item D</li>
+            </ul>
+            <output aria-label="List item activated" aria-live="polite" aria-relevant="additions" id="keynavUpDown2-output"/>
         </div>
     </section>
 
@@ -63,6 +73,20 @@
                 el.addEventListener('click', e => {
                     console.log('click', e.target.textContent);
                     updateOutput(outputEl, 'You activated ' + e.target.textContent);
+                });
+            });
+
+            // Copied from above - abstract out if copy again :)
+            const listEl2 = document.querySelector('#keynavUpDown2-list');
+            const childrenElArr2 = [...listEl2.children];
+            const outputEl2 = document.querySelector('#keynavUpDown2-output');
+            childrenElArr2.forEach(el => {
+                el.addEventListener('focus', e => {
+                    console.log('focus', e);
+                });
+                el.addEventListener('click', e => {
+                    console.log('click', e.target.textContent);
+                    updateOutput(outputEl2, 'You activated ' + e.target.textContent);
                 });
             });
         });
