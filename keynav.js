@@ -27,17 +27,22 @@
 
 const Keynav = {};
 
+Keynav.initialized = false;
 Keynav.dataSelectorList = 'data-knw-keynav-list';
 Keynav.dataSelectorListItemActive = 'data-knw-keynav-list-active';
 
 Keynav.init = function(el) {
-    // Note: isEnabled not checked here so can easily enable it. Add check if problems.
-    const containerEl = el || document;
-    const keynavEls = containerEl.querySelectorAll(`[${Keynav.dataSelectorList}]`);
+    if (!this.initialized) {
+        const containerEl = el || document;
+        const keynavEls = containerEl
+            .querySelectorAll(`[${Keynav.dataSelectorList}]`);
 
-    keynavEls.forEach(keynavListEl => {
-        addKeynavToList(keynavListEl);
-    });
+        keynavEls.forEach(keynavListEl => {
+            addKeynavToList(keynavListEl);
+        });
+
+        this.initialized = true;
+    }
 };
 
 export default Keynav;
