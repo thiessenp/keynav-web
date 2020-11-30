@@ -52,13 +52,11 @@ function handleListNavigation(e) {
     else if (key === 'Home') {
         e.preventDefault();
         firstListItem(this);
-        console.log('home')
     }
     else if (key === 'End') {
         e.preventDefault();
         // Defaults to sendi,g focus to first element
         lastListItem(this);
-        console.log('end')
     }
 }
 
