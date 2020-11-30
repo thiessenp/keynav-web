@@ -15,7 +15,9 @@ function getMappedKey(key) {
     if (key === 'ArrowUp' || key === 'Up' || key === 38) return 'ArrowUp';
     if (key === 'ArrowDown' || key === 'Down' || key === 40) return 'ArrowDown';
     if (key === 'ArrowRight' || key === 'Right' || key === 39) return 'ArrowRight';
-    if (key === 'ArrowLeft' ||key === 'Left' || key === 37) return 'ArrowLeft';
+    if (key === 'Delete' || key === 'Delete' || key === 46) return 'Delete';
+    if (key === 'End' || key === 'End' || key === 35) return 'End';
+    if (key === 'Home' || key === 'Home' || key === 36) return 'Home';
 
     // undefined returned for not found
 }

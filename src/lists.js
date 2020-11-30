@@ -1,5 +1,7 @@
 import {getKeyByEvent} from './keys';
 
+// TODO: Delete	When focus is on the Joke tab, removes the tab from the tab list and places focus on the previous tab.
+
 /**
  * Behavior
  * arrorwing to next/prev El triggers a focus on it (prob w/ border)
@@ -29,6 +31,8 @@ function handleListNavigation(e) {
     // Avoid e.preventDefault(); here, or keys like tab stop working..
 
     const key = getKeyByEvent(e);
+
+    // TODO: careful with `this` maybe set explicit?
     
     // Data attribute used to track active to make tracking state easier
     let active = getActiveListItem(this);
@@ -45,10 +49,22 @@ function handleListNavigation(e) {
         e.preventDefault();
         prevListItem(this, active)
     }
+    else if (key === 'Home') {
+        e.preventDefault();
+        firstListItem(this);
+        console.log('home')
+    }
+    else if (key === 'End') {
+        e.preventDefault();
+        // Defaults to sendi,g focus to first element
+        lastListItem(this);
+        console.log('end')
+    }
 }
 
 function nexListItem(listEl, el) {
-    if (!el) {
+    // Assume 1st element in list if none sent OR no next (end of list)
+    if (!el || !el.nextElementSibling) {
         el = listEl.firstElementChild;
     }
     else if (el.nextElementSibling) {
@@ -65,6 +81,10 @@ function prevListItem(listEl, el) {
     if (!el) {
         el = listEl.firstElementChild;
     } 
+    // Loop around to last element if at beginning of list
+    else if (!el.previousElementSibling) {
+        el = listEl.lastElementChild;
+    }
     else if (el.previousElementSibling) {
         el = el.previousElementSibling;
         el.focus();
@@ -74,6 +94,21 @@ function prevListItem(listEl, el) {
         setActiveListItem(listEl, el);
         el.focus();
     }
+}
+
+function firstListItem(listEl) {
+    // Defaults to sendi,g focus to first element
+    nexListItem(listEl);
+}
+
+function lastListItem(listEl) {
+    if (!listEl || !listEl.lastElementChild) {
+        return;
+    }
+
+    // Get to the last item, by finding the second last item that next uses
+    const secondLastEl = listEl.lastElementChild.previousElementSibling;
+    nexListItem(listEl, secondLastEl);
 }
 
 function activateListItem(listEl, el) {

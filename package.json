@@ -18,8 +18,7 @@
     "url": "https://github.com/thiessenp/keynav-web/issues"
   },
   "homepage": "https://github.com/thiessenp/keynav-web#readme",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@babel/preset-env": "^7.12.7",
