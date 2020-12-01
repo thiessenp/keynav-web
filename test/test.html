@@ -38,28 +38,18 @@
         </div>
     </section>
 
-    <!-- CORS... must load file on server for modules (ES does XHR req for mods) -->
-    <!-- <script type="module" src="../keynav-web.js"></script> -->
+    <!-- 
+        CORS... must load file on Server for modules (ES does XHR req for mods):
+        <script type="module" src="../keynav-web.js"></script>
+        <script type="module">
+            import KeynavWeb from '../index.js';
+            ...my code
 
-    <!-- <script src="./keynav-web.js"></script> -->
-
-    <!-- type=module or get error Cannot use import statement outside a module -->
-    <script type="module">
-    
-    // <script>
-
-        import * as StarKeynavWeb from '../index.js';
-        console.log('StarKeynavWeb', StarKeynavWeb)
-
-        // import KeynavWeb from '../keynav-web.js';
-        // console.log('KeynavWeb', KeynavWeb)
-
-        // import {keynav} from '../index.js';
-        // console.log('keynav', keynav)
-
-        // import * as ModKeynavWeb from '../src/index.js';
-        // console.log('ModKeynavWeb', ModKeynavWeb)
-
+        Would be a pain why below script ...
+     -->
+    <script src="../index.js"></script>
+    <script>
+        console.log('KeynavWeb=', KeynavWeb)
 
         document.addEventListener('DOMContentLoaded', function() {
             // Add hotkeys (searched from DOM)

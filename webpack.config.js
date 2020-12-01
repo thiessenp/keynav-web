@@ -4,6 +4,8 @@ const path = require('path');
 module.exports = {
     entry: {
         main: path.resolve(__dirname, "src/index.js"),
+        
+        // -Or- as individual objects
         // keynav: path.resolve(__dirname, "src/keynav.js"),
         // hotkeys: path.resolve(__dirname, "src/hotkeys.js"),
     },
@@ -14,8 +16,8 @@ module.exports = {
         libraryTarget:'umd',            // Works with CommonJS and ES Modules
 
         // Note: bellow may not be needed but may help
-        libraryExport: 'default',       
-        umdNamedDefine: true
+        // libraryExport: 'default',       
+        // umdNamedDefine: true
     },
 	module: {
         rules: [
