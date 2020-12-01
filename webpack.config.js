@@ -2,14 +2,20 @@
 const path = require('path');
 
 module.exports = {
-    entry: path.resolve(__dirname, "src/index.js"),
+    entry: {
+        main: path.resolve(__dirname, "src/index.js"),
+        // keynav: path.resolve(__dirname, "src/keynav.js"),
+        // hotkeys: path.resolve(__dirname, "src/hotkeys.js"),
+    },
     output: {
-        path: path.resolve(__dirname, "./"),
-        filename: 'keynav-web.js',
-        // Var lib exposed as
-        library: 'KeynavWeb',
-        //libraryTarget:'umd' -- Not compatible with ES6 Modules
-        libraryTarget:'var'
+        path: path.resolve(__dirname, ""),
+        filename: 'index.js',
+        library: 'KeynavWeb',           // Var lib exposed as -- but not really..? :)
+        libraryTarget:'umd',            // Works with CommonJS and ES Modules
+
+        // Note: bellow may not be needed but may help
+        // libraryExport: 'default',       
+        // umdNamedDefine: true
     },
 	module: {
         rules: [
@@ -19,14 +25,21 @@ module.exports = {
                 exclude: /node_modules/,
                 use: "babel-loader",
             },
-        //   {
-        //     test: /.png$/,
-        //     use: 'base64-image-loader'
-        //   },
-        //   {
-        //     test: /.css$/,
-        //     use: 'css-content-loader'
-        //   }
+
+            // Example: Files to skip
+            // noParse: [ /^dontParseThis$/ ],
+
+            // Example: Images 
+            //   {
+            //     test: /.png$/,
+            //     use: 'base64-image-loader'
+            //   },
+
+            // Example: CSS
+            //   {
+            //     test: /.css$/,
+            //     use: 'css-content-loader'
+            //   }
         ]
     },
 

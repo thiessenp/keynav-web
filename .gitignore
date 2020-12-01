@@ -6,8 +6,8 @@ node_modules
 .pnp.js
 
 # production -- Include with release but not in repo
-# dist
-keynav-web.js
+dist
+
 
 # misc
 .DS_Store
