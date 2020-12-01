@@ -5,8 +5,9 @@ node_modules
 /.pnp
 .pnp.js
 
-# production -- Include with release
+# production -- Include with release but not in repo
 # dist
+keynav-web.js
 
 # misc
 .DS_Store
@@ -18,5 +19,3 @@ yarn-error.log*
 package-lock.json
 npm-shrinkwrap.json
 
-# Temp
-keynav-web

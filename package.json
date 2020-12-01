@@ -1,8 +1,8 @@
 {
   "name": "keynav-web",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "keyboard navigation for web based UIs",
-  "main": "dist/keynav-web.js",
+  "main": "keynav-web.js",
   "scripts": {
     "start": "webpack-cli --watch --config webpack.config.js",
     "build": "webpack --mode=production",
@@ -32,6 +32,6 @@
     ]
   },
   "files": [
-    "dist"
+    "keynav-web.js"
   ]
 }

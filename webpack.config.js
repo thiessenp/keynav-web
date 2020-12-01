@@ -4,11 +4,12 @@ const path = require('path');
 module.exports = {
     entry: path.resolve(__dirname, "src/index.js"),
     output: {
-        path: path.resolve(__dirname, "dist"),
+        path: path.resolve(__dirname, "./"),
         filename: 'keynav-web.js',
         // Var lib exposed as
         library: 'KeynavWeb',
-        libraryTarget:'umd'
+        //libraryTarget:'umd' -- Not compatible with ES6 Modules
+        libraryTarget:'var'
     },
 	module: {
         rules: [
