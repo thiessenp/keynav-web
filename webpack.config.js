@@ -14,8 +14,8 @@ module.exports = {
         libraryTarget:'umd',            // Works with CommonJS and ES Modules
 
         // Note: bellow may not be needed but may help
-        // libraryExport: 'default',       
-        // umdNamedDefine: true
+        libraryExport: 'default',       
+        umdNamedDefine: true
     },
 	module: {
         rules: [
