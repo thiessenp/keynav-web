@@ -49,14 +49,16 @@
      -->
     <script src="../index.js"></script>
     <script>
-        console.log('KeynavWeb=', KeynavWeb)
+        console.log('KeynavWeb=', KeynavWeb);
+        console.log('KeynavWeb.Hotkeys=', KeynavWeb.Hotkeys);
+        console.log('KeynavWeb.Keynav=', KeynavWeb.Keynav);
 
         document.addEventListener('DOMContentLoaded', function() {
             // Add hotkeys (searched from DOM)
-            KeynavWeb.hotkeys.init();
+            KeynavWeb.Hotkeys.init();
 
             // Add keynav for lists (searched from DOM)
-            KeynavWeb.keynav.init();
+            KeynavWeb.Keynav.init();
 
             //
             // Add custom behavior to test Above hotkeys and keynav

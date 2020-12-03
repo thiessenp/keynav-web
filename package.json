@@ -1,6 +1,6 @@
 {
   "name": "keynav-web",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "keyboard navigation for web based UIs",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/thiessenp/keynav-web.git"
   },
-  "author": "",
+  "author": "thiessenp",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/thiessenp/keynav-web/issues"
@@ -23,6 +23,7 @@
     "@babel/core": "^7.12.9",
     "@babel/preset-env": "^7.12.7",
     "babel-loader": "^8.2.1",
+    "lodash": "^4.17.20",
     "webpack": "^5.6.0",
     "webpack-cli": "^4.2.0"
   },
@@ -32,6 +33,7 @@
     ]
   },
   "files": [
-    "keynav-web.js"
-  ]
+    "index.js"
+  ],
+  "prepublishOnly": "npm run build"
 }

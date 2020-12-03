@@ -10,14 +10,24 @@ module.exports = {
         // hotkeys: path.resolve(__dirname, "src/hotkeys.js"),
     },
     output: {
-        path: path.resolve(__dirname, ""),
+        path: path.resolve(__dirname, './'),
         filename: 'index.js',
         library: 'KeynavWeb',           // Var lib exposed as -- but not really..? :)
         libraryTarget:'umd',            // Works with CommonJS and ES Modules
 
         // Note: bellow may not be needed but may help
+        //  globalObject: 'this',
         // libraryExport: 'default',       
         // umdNamedDefine: true
+    },
+    // Externalize these dependencies to reduce bundle size
+    externals: {
+        lodash: {
+            commonjs: 'lodash',
+            commonjs2: 'lodash',
+            amd: 'lodash',
+            root: '_',
+        },
     },
 	module: {
         rules: [
