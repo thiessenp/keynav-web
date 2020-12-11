@@ -25,19 +25,16 @@
  * ```
  */
 
-import {addKeynavToList} from './lists';
+import {Lists} from './lists';
 
 const Keynav = {};
 
 Keynav.initialized = false;
 
-Keynav.dataSelectorList = 'data-knw-keynav-list';
-
-Keynav.init = function(el) {
+Keynav.init = function(props={}) {
     if (!this.initialized) {
-        const containerEl = el || document;
-    
-        addKeynavToList(containerEl, Keynav.dataSelectorList);
+        const keynavLists = new Lists();
+        keynavLists.init();
 
         this.initialized = true;
     }

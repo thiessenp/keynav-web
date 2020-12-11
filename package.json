@@ -1,6 +1,6 @@
 {
   "name": "keynav-web",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "keyboard navigation for web based UIs",
   "main": "index.js",
   "scripts": {
@@ -30,6 +30,15 @@
   "babel": {
     "presets": [
       "@babel/preset-env"
+    ],
+    "plugins": [
+      [
+        "@babel/plugin-proposal-class-properties",
+        {
+          "loose": true
+        }
+      ],
+      ["@babel/plugin-proposal-private-methods", { "loose": true }]
     ]
   },
   "files": [

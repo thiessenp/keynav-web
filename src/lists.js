@@ -1,148 +1,168 @@
 import {getKeyByEvent} from './keys';
 
-// TODO: Delete	When focus is on the Joke tab, removes the tab from the tab list and places focus on the previous tab.
+// TODO: Delete Behavior - keying delete removes the current tab from the tab list and places focus on the previous tab.
+// Static: methods nor static properties can be called on instances of the class
+// Static: methods are often utility functions, such as functions to create or clone objects
 
-/**
- * Behavior
- * arrorwing to next/prev El triggers a focus on it (prob w/ border)
- * enter/space clicks the current el (any click callbacks on the El r called)
- */
-function addKeynavToList(containerEl, dataSelectorList='data-knw-keynav-list') {
-    const keynavEls = containerEl.querySelectorAll(`[${dataSelectorList}]`);
-    keynavEls.forEach((listEl) => {
-        if (!listEl) {
-            return;
+export class Lists {
+    initialized = false
+    listItems = []
+
+    constructor(props={}) {
+        // Can either send custom list or use convenience method to creat it for you
+        this.listItems = props.listItems || Lists.createListsFromDOM(props.selectorList, props.selectorListItem);
+        // Convert non-array to an array to make easier to work with
+        this.listItems = Array.from(this.listItems);
+        // Allow delaying DOM interaction but would need to send custom list also to work
+        if (props.isAutoInit !== false) {
+            this.init();
+        }
+    }
+
+    init() {
+        if (!this.initialized) {         
+            this.addListItems();
+            this.initialized = true;
+        }
+    }
+
+    addListItems() {
+        this.listItems = this.listItems.map(items => {
+            if (!items || items.length === undefined) {
+                throw new Error('Error: Lists addListItems received a non array like list of items in listItems');
+            }
+            items = Array.from(items);
+            return new List({items});
+        });
+    }
+
+    static createListsFromDOM(selectorList='[data-knw-list]', selectorListItem='[data-knw-list-item]') {
+        const containerListEls = document.querySelectorAll(selectorList);
+        // Array of NodeLists
+        let childListsEls = [];
+
+        containerListEls.forEach(function(containerListEl) {
+            childListsEls.push(containerListEl.querySelectorAll(selectorListItem));
+        });
+
+        return childListsEls;
+    }
+}
+
+// NOTE: no way to delegate since Parent > Child relationship can be any nesting -- or hm mmaybe?
+// NOTE: Data attribute used to track active to make tracking state easier
+
+export class List {
+    items = [];
+
+    constructor({items, isAutoInit=true}) {
+        if (!items || items.length === undefined) {
+            throw new Error('Error: called List constructor without items list');
+        }
+        this.items = Array.from(items);
+        if (isAutoInit) { this.init(); }
+    }
+
+    init() {
+        this.addBehavior();
+        // Create an entry point by use existing Active or default to first item
+        const firstItem = this.getActive() || this.items[0];
+        this.setActive(firstItem);
+    }
+
+    addBehavior() {
+        this.items.forEach(item => {
+            if (!item) { return; }
+            // NOTE: keep arrow invocation this way so can call with Class's `this`
+            item.addEventListener('keydown', e => { this.handleKey(e); });
+            item.addEventListener('blur', e => { this.handleBlurr(e); });
+            item.addEventListener('click', (e) => { this.handleClick(e); });
+        });
+    }
+
+    handleKey(e) {
+        const key = getKeyByEvent(e);
+
+        if (key === 'Enter' || key === 'Space') {
+            e.preventDefault();
+            this.setActive(e.target);
+            // Click done here so can use setActive in getClick without x2 click problem
+            const active = this.getActive();
+            if (active) { active.click(); }
+        }
+        else if (key === 'ArrowDown' || key === 'ArrowRight') {
+            e.preventDefault();	
+            const next =  this.getNext(e.target);
+            this.setFocussed(next);
+            next.focus();
+        }
+        else if (key === 'ArrowUp' || key === 'ArrowLeft') {
+            e.preventDefault();
+            const prev =  this.getPrev(e.target);
+            this.setFocussed(prev);
+            prev.focus();
         }
 
-        listEl.addEventListener('keydown', handleListNavigation);
+        // TODO:
+        else if (key === 'Home') {}
+        else if (key === 'End') {}        
+    }
 
-        if (!getActiveListItem(listEl)) {
-            nexListItem(listEl);
+    handleClick(e) {
+        // NOTE: no need to click, since natively done - otherwise would be double click
+        // plus intention to handle click with custom behavior, so prevent it actually.
+        this.setActive(e.target);
+    }
+
+    handleBlurr(e) {
+        this.removeFocussed();
+    }
+
+    setActive(item) {
+        if (!item) { return; }
+        // Only update if el is not currently active, avoids DOM confusion
+        if (item.getAttribute('tabindex') !== '0') {
+            // Remove any old state to make way for the New Active!
+            this.removeActive();
+            item.setAttribute('tabindex', '0');
         }
-    });
-}
-
-/**
- * 
- * Note: Automatic Navigation (activate item on nav to) is used. Could 
- * add a feature switch for Automatic/Manual nav.
- */
-function handleListNavigation(e) {
-    // Avoid e.preventDefault(); here, or keys like tab stop working..
-
-    const key = getKeyByEvent(e);
-
-    // TODO: careful with `this` maybe set explicit?
-    
-    // Data attribute used to track active to make tracking state easier
-    let active = getActiveListItem(this);
-
-    if (key === 'Enter' || key === 'Space') {
-        e.preventDefault();
-        activateListItem(this, active)
-    }
-    else if (key === 'ArrowDown' || key === 'ArrowRight') {		
-        e.preventDefault();	
-        nexListItem(this, active)
-    }
-    else if (key === 'ArrowUp' || key === 'ArrowLeft') {
-        e.preventDefault();
-        prevListItem(this, active)
-    }
-    else if (key === 'Home') {
-        e.preventDefault();
-        firstListItem(this);
-    }
-    else if (key === 'End') {
-        e.preventDefault();
-        // Defaults to sendi,g focus to first element
-        lastListItem(this);
-    }
-}
-
-function nexListItem(listEl, el) {
-    // Assume 1st element in list if none sent OR no next (end of list)
-    if (!el || !el.nextElementSibling) {
-        el = listEl.firstElementChild;
-    }
-    else if (el.nextElementSibling) {
-        el = el.nextElementSibling;
     }
 
-    if (el) { 
-        setActiveListItem(listEl, el);
-        el.focus();
-    }
-}
-
-function prevListItem(listEl, el) {
-    if (!el) {
-        el = listEl.firstElementChild;
-    } 
-    // Loop around to last element if at beginning of list
-    else if (!el.previousElementSibling) {
-        el = listEl.lastElementChild;
-    }
-    else if (el.previousElementSibling) {
-        el = el.previousElementSibling;
-        el.focus();
+    removeActive() {
+        const item = this.getActive();
+        if (!item) { return; }
+        item.setAttribute('tabindex', '-1');
     }
 
-    if (el) { 
-        setActiveListItem(listEl, el);
-        el.focus();
-    }
-}
-
-function firstListItem(listEl) {
-    // Defaults to sendi,g focus to first element
-    nexListItem(listEl);
-}
-
-function lastListItem(listEl) {
-    if (!listEl || !listEl.lastElementChild) {
-        return;
+    setFocussed(item) {
+        if (!item) { return; }
+        // Make sure attribute has a tabindex so can be focussed
+        if (item.getAttribute('tabindex') !== '-1' && item.getAttribute('tabindex') !== '0') {
+            item.setAttribute('tabindex', '-1');
+        }
     }
 
-    // Get to the last item, by finding the second last item that next uses
-    const secondLastEl = listEl.lastElementChild.previousElementSibling;
-    nexListItem(listEl, secondLastEl);
-}
-
-function activateListItem(listEl, el) {
-    // Inactive list so enter at the first list item
-    if (!el) {
-        el = listEl.firstElementChild;
-        setActiveListItem(listEl, el);
-        el.focus();
-    // Active list so activate (browser click on) the current element
-    } else {
-        el.click();
-    }
-}
-
-function getActiveListItem(listEl) {
-    if (!listEl) return;
-
-    return listEl.querySelector(`[tabindex="0"]`);
-}
-
-function setActiveListItem(listEl, listItemEl) {
-    if (!listEl || !listItemEl) return;
-
-    // remove old active el attribute
-    const oldActiveEl = getActiveListItem(listEl);
-    if (oldActiveEl) {
-        oldActiveEl.setAttribute('tabindex', '-1');
+    getActive() {
+        return this.items.find(item => item.getAttribute('tabindex') === '0');
     }
 
-    // set new active el attribute
-    listItemEl.setAttribute('tabindex', '0');
-}
+    getNext(item) {
+        const index = this.items.indexOf(item);
+        // Not found
+        if (index < 0) { return this.items[0]; }
+        // End of list
+        if (!this.items[index + 1]) { return this.items[0]; }
+        // Got it
+        return this.items[index + 1];
+    }
 
-export {
-    getActiveListItem,
-    setActiveListItem,
-    handleListNavigation,
-    addKeynavToList
+    getPrev(item) {
+        const index = this.items.indexOf(item);
+        // Not found
+        if (index < 0) { return this.items[0]; }
+        // Passed Begining of list
+        if (!this.items[index - 1]) { return this.items[this.items.length - 1]; }
+        // Got it
+        return this.items[index - 1];       
+    }
 }

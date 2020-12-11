@@ -2,7 +2,7 @@
 <html lang="en-us">
 <head>
     <meta charset="utf-8">
-    <title>test</title>
+    <title>Keynav Tests</title>
 </head>
 <body>
 
@@ -18,21 +18,21 @@
         <h1 id="keynavtest-label">Keynav Tests</h1>
         <div>
             <h2 id="keynavUpDown-label">List of Items 1 - nav with up or down keys</h2>
-            <ul data-knw-keynav-list id="keynavUpDown-list" aria-labelledby="keynavUpDown-label">
-                <li tabindex="-1">List Item A</li>
-                <li tabindex="-1">List Item B</li>
-                <li tabindex="-1">List Item C</li>
-                <li tabindex="-1">List Item D</li>
+            <ul id="keynavUpDown-list1" aria-labelledby="keynavUpDown-label" data-knw-list>
+                <li data-knw-list-item>List Item A</li>
+                <li data-knw-list-item>List Item B</li>
+                <li data-knw-list-item>List Item C</li>
+                <li data-knw-list-item>List Item D</li>
             </ul>
             <output aria-label="List item activated" aria-live="polite" aria-relevant="additions" id="keynavUpDown-output"/>
         </div>
         <div>
             <h2 id="keynavUpDown2-label">List of Items 2 - check multiple lists work</h2>
-            <ul data-knw-keynav-list id="keynavUpDown2-list" aria-labelledby="keynavUpDown2-label">
-                <li tabindex="0">List Item A</li>
-                <li tabindex="-1">List Item B</li>
-                <li tabindex="-1">List Item C</li>
-                <li tabindex="-1">List Item D</li>
+            <ul id="keynavUpDown2-list" aria-labelledby="keynavUpDown2-label" data-knw-list>
+                <li>Not In List</li>
+                <li tabindex="-1" data-knw-list-item>List Item B</li>
+                <li data-knw-list-item>List Item C (start missing tabindex)</li>
+                <li tabindex="0" data-knw-list-item>List Item A (start tabindex=0")</li>
             </ul>
             <output aria-label="List item activated" aria-live="polite" aria-relevant="additions" id="keynavUpDown2-output"/>
         </div>
@@ -58,6 +58,12 @@
             KeynavWeb.Hotkeys.init();
 
             // Add keynav for lists (searched from DOM)
+            // const keyanvListEl1 = document.querySelector('#keynavUpDown-list1');
+            // const keynavItemsListEls1 = keyanvListEl1.querySelectorAll('[tabindex]');
+            // KeynavWeb.Keynav.init({
+            //     itemsList: keynavItemsListEls1
+            // });
+
             KeynavWeb.Keynav.init();
 
             //
@@ -73,7 +79,7 @@
             });
 
             // Set some behavior for when a list element is activated
-            const listEl = document.querySelector('#keynavUpDown-list');
+            const listEl = document.querySelector('#keynavUpDown-list1');
             const childrenElArr = [...listEl.children];
             const outputEl = document.querySelector('#keynavUpDown-output');
             childrenElArr.forEach(el => {
