@@ -57,14 +57,25 @@
             // Add hotkeys (searched from DOM)
             KeynavWeb.Hotkeys.init();
 
-            // Add keynav for lists (searched from DOM)
-            // const keyanvListEl1 = document.querySelector('#keynavUpDown-list1');
-            // const keynavItemsListEls1 = keyanvListEl1.querySelectorAll('[tabindex]');
-            // KeynavWeb.Keynav.init({
-            //     itemsList: keynavItemsListEls1
-            // });
-
-            KeynavWeb.Keynav.init();
+            KeynavWeb.Keynav.init({
+                // activateCb: function(item) {
+                //     console.log('activateCb test, item=', item);
+                //     if (!item) { return; }
+                //     // Only update if el is not currently active, avoids DOM confusion
+                //     if(item.getAttribute('tabindex') !== '0') {
+                //         // // Remove any old state to make way for the New Active!
+                //         // this.removeActive();
+                //         item.setAttribute('tabindex', '0');
+                //     }
+                // },
+                // deactivateCb: function(item) {
+                //     console.log('deactivateCb test, item=', item);
+                //     if (!item) { return; }
+                //     if (item.getAttribute('tabindex') !== '-1') {
+                //         item.setAttribute('tabindex', '-1');
+                //     }
+                // },
+            });
 
             //
             // Add custom behavior to test Above hotkeys and keynav

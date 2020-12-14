@@ -25,16 +25,22 @@
  * ```
  */
 
-import {Lists} from './lists';
+import {List} from './list';
 
 const Keynav = {};
 
 Keynav.initialized = false;
 
+// May be useful, should arguably remove since not using now
+Keynav.lists = [];
+
 Keynav.init = function(props={}) {
     if (!this.initialized) {
-        const keynavLists = new Lists();
-        keynavLists.init();
+        this.lists = List.buildKeynavLists({
+            listItems: props.items,
+            activateCb: props.activateCb,
+            deactivateCb: props.deactivateCb
+        });
 
         this.initialized = true;
     }

@@ -14,6 +14,7 @@ function getMappedKey(key) {
     if (key === ' ' || key === 'Space' || key === 32) return 'Space';
     if (key === 'ArrowUp' || key === 'Up' || key === 38) return 'ArrowUp';
     if (key === 'ArrowDown' || key === 'Down' || key === 40) return 'ArrowDown';
+    if (key === 'ArrowLeft' || key === 'Left' || key === 37) return 'ArrowLeft';
     if (key === 'ArrowRight' || key === 'Right' || key === 39) return 'ArrowRight';
     if (key === 'Delete' || key === 'Delete' || key === 46) return 'Delete';
     if (key === 'End' || key === 'End' || key === 35) return 'End';
