@@ -137,39 +137,30 @@ export class List {
         return this.items[index - 1];       
     }
 
-    static createListsFromDOM(selectorList='[data-knw-list]', selectorListItem='[data-knw-list-item]') {
+    static createListsFromDOM({selectorList, selectorListItem}) {
         const containerListEls = document.querySelectorAll(selectorList);
         // Array of NodeLists
         let childListsEls = [];
-
         containerListEls.forEach(function(containerListEl) {
             childListsEls.push(containerListEl.querySelectorAll(selectorListItem));
         });
-
         return childListsEls;
     }
 
-    static buildKeynavLists({listItems, selectorList, selectorListItem, activateCb, deactivateCb}) {
-        // Can either send custom list or use convenience method to creat it for you
-        listItems = listItems || List.createListsFromDOM(selectorList, selectorListItem);
-
+    static buildLists({items, activateCb, deactivateCb}) {
         // Convert non-array to an array to make easier to work with
-        listItems = Array.from(listItems);
-
-        listItems = listItems.map(items => {
-            if (!items || items.length === undefined) {
+        items = Array.from(items);
+        items = items.map(listItems => {
+            if (!listItems || listItems.length === undefined) {
                 throw new Error('Error: Lists addListItems received a non array like list of items in listItems');
             }
-            items = Array.from(items);
+            listItems = Array.from(listItems);
             return new List({
-                items,
-                selectorList,
-                selectorListItem,
+                items: listItems,
                 activateCb,
                 deactivateCb
             });
         });
-
-        return listItems;
+        return items;
     }
 }

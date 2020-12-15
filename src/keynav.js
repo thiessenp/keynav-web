@@ -36,8 +36,13 @@ Keynav.lists = [];
 
 Keynav.init = function(props={}) {
     if (!this.initialized) {
-        this.lists = List.buildKeynavLists({
-            listItems: props.items,
+        const items = props.items || List.createListsFromDOM({
+            selectorList: props.selectorList || '[data-knw-list]',
+            selectorListItem: props.selectorListItem || '[data-knw-list-item]'
+        });
+
+        this.lists = List.buildLists({
+            items,
             activateCb: props.activateCb,
             deactivateCb: props.deactivateCb
         });
