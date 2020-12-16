@@ -19,7 +19,7 @@
         <div>
             <h2 id="keynavUpDown-label">List of Items 1 - nav with up or down keys</h2>
             <ul id="keynavUpDown-list1" aria-labelledby="keynavUpDown-label" data-knw-list>
-                <li data-knw-list-item>List Item A</li>
+                <li data-knw-list-item id="test1">List Item A</li>
                 <li data-knw-list-item>List Item B</li>
                 <li data-knw-list-item>List Item C</li>
                 <li data-knw-list-item>List Item D</li>
@@ -34,7 +34,7 @@
                 <li data-knw-list-item>List Item C (start missing tabindex)</li>
                 <li tabindex="0" data-knw-list-item>List Item A (start tabindex=0")</li>
             </ul>
-            <output aria-label="List item activated" aria-live="polite" aria-relevant="additions" id="keynavUpDown2-output"/>
+            <output aria-label="List item activated" aria-live="polite" aria-relevant="additions" id="keynavUpDown2-output"></output>
         </div>
     </section>
 
@@ -82,22 +82,22 @@
             //
             
             // "Click" Handlers for Triggered Hotkeys
-            xtest.addEventListener('click', () => {
+            xtest.addEventListener('click', function() {
                 alert('x keyed and triggered me -or- i was clicked')
             });
-            ctrlxtest.addEventListener('click', () => {
+            ctrlxtest.addEventListener('click', function() {
                 alert('ctrl+x keyed and triggered me -or- i was clicked')
             });
 
             // Set some behavior for when a list element is activated
             const listEl = document.querySelector('#keynavUpDown-list1');
-            const childrenElArr = [...listEl.children];
+            const childrenElArr = Array.prototype.slice.call(listEl.children);
             const outputEl = document.querySelector('#keynavUpDown-output');
-            childrenElArr.forEach(el => {
-                el.addEventListener('focus', e => {
+            childrenElArr.forEach(function(el) {
+                el.addEventListener('focus', function(e) {
                     console.log('focus', e);
                 });
-                el.addEventListener('click', e => {
+                el.addEventListener('click', function(e) {
                     console.log('click', e.target.textContent);
                     updateOutput(outputEl, 'You activated ' + e.target.textContent);
                 });
@@ -105,13 +105,13 @@
 
             // Copied from above - abstract out if copy again :)
             const listEl2 = document.querySelector('#keynavUpDown2-list');
-            const childrenElArr2 = [...listEl2.children];
+            const childrenElArr2 = Array.prototype.slice.call(listEl2.children);
             const outputEl2 = document.querySelector('#keynavUpDown2-output');
-            childrenElArr2.forEach(el => {
-                el.addEventListener('focus', e => {
+            childrenElArr2.forEach(function(el) {
+                el.addEventListener('focus', function(e) {
                     console.log('focus', e);
                 });
-                el.addEventListener('click', e => {
+                el.addEventListener('click', function(e) {
                     console.log('click', e.target.textContent);
                     updateOutput(outputEl2, 'You activated ' + e.target.textContent);
                 });

@@ -44,7 +44,8 @@ Keynav.init = function(props={}) {
         this.lists = List.buildLists({
             items,
             activateCb: props.activateCb,
-            deactivateCb: props.deactivateCb
+            deactivateCb: props.deactivateCb,
+            focussedCb: props.focussedCb
         });
 
         this.initialized = true;
