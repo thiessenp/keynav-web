@@ -1,6 +1,8 @@
 # keynav-web
 keyboard navigation for web based UIs
 
+*TODO IE11 support using babel*
+
 ## APIS
 
 ### Hotkeys

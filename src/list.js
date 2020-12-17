@@ -2,7 +2,7 @@
  * NOTE: Only state is items[], HTML Data attributes are used to track active to make tracking state easier
  */
 
-import {getKeyByEvent} from './keys';
+import {getKeyFromEvent, fireKey} from './keys';
 
 
 export class List {
@@ -71,7 +71,7 @@ export class List {
     }
 
     handleKey(e) {
-        const key = getKeyByEvent(e);
+        const key = getKeyFromEvent(e);
 
         // List of keys part of behavior, if not do nothing
         // NOTE: have to add key here and switch, difficult to maintain?
@@ -107,9 +107,8 @@ export class List {
                 this.focussedCb(last);
                 break;
             case 'Delete':
-                // Assumed behavior, is to then go the next item (prev?)
-                const customKeyEvent = new KeyboardEvent('keydown', {key: 'ArrowUp', code: 'ArrowUp', which: 38});
-                e.target.dispatchEvent(customKeyEvent);
+                // Assumed behavior is to fist go the next (or prev?) item 
+                fireKey({target: e.target, type: 'keydown', key: 'ArrowUp'});
                 // Then remove it
                 this.removeItem(e.target);
                 break;
