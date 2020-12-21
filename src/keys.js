@@ -1,40 +1,90 @@
+/**
+ * Maps a keyboard key either from legacy event.which 
+ * to event.key or vice versa.
+ * 
+ * Note: event.code is rarely useful so not included.
+ * 
+ * @param {object} e proboably from an event
+ */
+function getKeyFromEvent(e) {
+    if (typeof e !== 'object') { return e; }
+
+    // Legacy event, use e.which to get e.key for modern browsers
+    if (e.key === undefined && Number.isInteger(e.which)) {
+        return getKeyByWhich(e.which);
+    }
+
+    return e.key
+};
+
+// What key, which thing? Look it up on https://keycode.info/
+// note: could also receive "code" but seems unneeded
+function fireKey({target=document, type='keydown', key, /*DEPRECATED*/which/*DEPRECATED*/}) {
+    if (key === undefined && which === undefined) { return; }
+
+    // DEPRECATED: Which not needed in modern browsers but here it is for legacy
+    if (which === undefined) {
+        which = mapKeyToWhich(key);
+    }
+    // DEPRECATED: Also which may be more convenient so add a mapping to key
+    if (key === undefined) {
+        key = mapWhichToKey(which);
+    }
+
+    const customKeyEvent = new KeyboardEvent(type, {key , which});
+    target.dispatchEvent(customKeyEvent);
+}
+
+export {
+    fireKey,
+    getKeyFromEvent,
+
+    // Below For historical purposes.
+    KEY_HASH,
+    mapWhichToKey,
+    mapKeyToWhich,
+}
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// NOTE: Below For historical purposes.
+// WARNING: event.which is deprecated and event.key (since IE9) should be used when possible.
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const KEY_HASH = {
     // Non characters
+    9: 'Backspace',
     9: 'Tab',
     13: 'Enter',
-    27: 'Escape',       // Esc older IE
+    16: 'Shift',
+    17: 'Control',
+    18: 'Alt',
+    27: 'Escape',       // older IE: Esc 
     32: 'Space',
     33: 'PageUp',
     34: 'PageDown',
     35: 'End',
     36: 'Home',
-    37: 'ArrowLeft',    // Left
-    38: 'ArrowUp',      // Up
+    37: 'ArrowLeft',    // older IE: Left
+    38: 'ArrowUp',      // older IE: Up
     39: 'ArrowRight',
-    40: 'ArrowDown',    // Down
+    40: 'ArrowDown',    // older IE: Down
+    44: 'PrintScreen',
+    45: 'Insert',
     46: 'Delete',
 
-    // Not sure what to do about:
-    // NUMBER_KEY=NUMBER_KEY
-    48: '0',
-    49: '1',
-    50: '2',
-    51: '3',
-    52: '4',
-    53: '5',
-    54: '6',
-    55: '7',
-    56: '8',
-    57: '9',
-    // -vs- SHIFT+NUMBER_KEY=SYMBOL
-    // 48: ')',
-    // 49: '!',
-    // 50: '@',
-    // ...57
+    // Numbers (TODO could add numpad keys)
+    48: '0',    // and )
+    49: '1',    // and !
+    50: '2',    // and @
+    51: '3',    // and #
+    52: '4',    // and $
+    53: '5',    // and %
+    54: '6',    // and ^
+    55: '7',    // and &
+    56: '8',    // and *
+    57: '9',    // and (
 
-    // Characters - e.which integer mapping not case sensitive
+    // Alphabet
     65: 'a',
     66: 'b',
     67: 'c',
@@ -62,17 +112,18 @@ const KEY_HASH = {
     89: 'y',
     90: 'z',
 
-    187: '+',   // or '='
-    189: '-',   // or '_'
-    199: ',',   // or ','
-    190: '.',   // or '>'
-    191: '?',   // or '/'
-
-    220: '\\'   // or '|'
-
-    // More TODO
+    // "Operation" keys - part 2
+    186: ';',   // (; and :)
+    187: '+',   // (= and +)
+    189: '-',   // (_ and -)
+    188: ',',   // (< and ,)
+    190: '.',   // (> and .)
+    191: '?',   // (/ and ?)
+    219: '[',   // ({ and [)
+    221: ']',   // (} and ])
+    220: '\\',  // (| and \)
+    222: '"',   // (' and "") which maps both single and double quote to 222
 };
-
 function mapWhichToKey(key) {
     if (key === undefined) { return; }
 
@@ -84,7 +135,6 @@ function mapWhichToKey(key) {
     // Explicit return of undefined for key not found
     return;
 }
-
 function mapKeyToWhich(key) {
     if (key === undefined) { return; }
 
@@ -97,49 +147,4 @@ function mapKeyToWhich(key) {
 
     // Explicit return of undefined for key not found
     return;
-}
-
-/**
- * Maps a keyboard key either from legacy event.which 
- * to event.key or vice versa.
- * 
- * Note: event.code is rarely useful so not included.
- * 
- * @param {object} e proboably from an event
- */
-function getKeyFromEvent(e) {
-    if (typeof e !== 'object') { return e; }
-
-    // Legacy event, use e.which to get e.key for modern browsers
-    if (e.key === undefined && Number.isInteger(e.which)) {
-        return getKeyByWhich(e.which);
-    }
-
-    return e.key
-};
-
-// What key, which thing? Look it up on https://keycode.info/
-// note: could also receive "code" but seems unneeded
-function fireKey({target=document, type='keydown', key, which}) {
-    if (key === undefined && which === undefined) { return; }
-
-    // Which not needed in modern browsers but here it is for legacy
-    if (which === undefined) {
-        which = mapKeyToWhich(key);
-    }
-    // Also which may be more convenient so add a mapping to key
-    if (key === undefined) {
-        key = mapWhichToKey(which);
-    }
-
-    const customKeyEvent = new KeyboardEvent(type, {key , which});
-    target.dispatchEvent(customKeyEvent);
-}
-
-export {
-    KEY_HASH,
-    getKeyFromEvent,
-    mapWhichToKey,
-    mapKeyToWhich,
-    fireKey,
 }

@@ -3,6 +3,8 @@ keyboard navigation for web based UIs
 
 *TODO IE11 support using babel*
 
+Note: Webpack has trouble importing projects created with Webpack, so includes the source in publish.
+
 ## APIS
 
 ### Hotkeys

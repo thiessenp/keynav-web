@@ -1,6 +1,6 @@
 {
   "name": "keynav-web",
-  "version": "1.0.18",
+  "version": "1.0.20",
   "description": "keyboard navigation for web based UIs",
   "main": "index.js",
   "scripts": {
@@ -42,7 +42,8 @@
     ]
   },
   "files": [
-    "index.js"
+    "index.js",
+    "src"
   ],
   "prepublishOnly": "npm run build"
 }
