@@ -3,14 +3,14 @@ const path = require('path');
 
 module.exports = {
     entry: {
-        main: path.resolve(__dirname, "src/index.js"),
+        main: path.resolve(__dirname, "lib/index.js"),
         
         // -Or- as individual objects
         // keynav: path.resolve(__dirname, "src/keynav.js"),
         // hotkeys: path.resolve(__dirname, "src/hotkeys.js"),
     },
     output: {
-        path: path.resolve(__dirname, './'),
+        path: path.resolve(__dirname, 'dist/'),
         filename: 'index.js',
         library: 'KeynavWeb',           // Var lib exposed as -- but not really..? :)
         libraryTarget:'umd',            // Works with CommonJS and ES Modules
