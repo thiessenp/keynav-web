@@ -3,7 +3,11 @@ keyboard navigation for web based UIs
 
 *TODO IE11 support using babel*
 
-Note: Webpack has trouble importing projects created with Webpack, so includes the source in publish.
+Note: Webpack has trouble importing projects created with Webpack, so includes the source in publish. BUT this ran into a Webpack error also where it would not run the babel-loader for imported libs. BUTx2 the built webpack project seems to be working as an import in another webpack project... "le sigh..." So, remove this from the package.json for now: 
+```
+// this alows projects that use the import ES6 style to auto chose the lib src -- TODO: add back later
+"module": "lib/index.js",
+```
 
 ## APIS
 

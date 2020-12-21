@@ -16,7 +16,7 @@ module.exports = {
         libraryTarget:'umd',            // Works with CommonJS and ES Modules
 
         // Note: bellow may not be needed but may help
-        //  globalObject: 'this',
+        globalObject: 'this',
         // libraryExport: 'default',       
         // umdNamedDefine: true
     },

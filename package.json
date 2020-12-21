@@ -1,9 +1,8 @@
 {
   "name": "keynav-web",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "description": "keyboard navigation for web based UIs",
   "main": "dist/index.js",
-  "module": "lib/index.js",
   "scripts": {
     "start": "webpack-cli --watch --config webpack.config.js",
     "build": "webpack --mode=production",
