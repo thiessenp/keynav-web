@@ -1,6 +1,6 @@
 {
   "name": "keynav-web",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "description": "keyboard navigation for web based UIs",
   "main": "dist/index.js",
   "scripts": {
