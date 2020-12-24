@@ -17,7 +17,7 @@
     <section aria-labelledby="keynavtest-label">
         <h1 id="keynavtest-label">Keynav Tests</h1>
         <div>
-            <h2 id="keynavUpDown-label">List of Items 1 - nav with up or down keys</h2>
+            <h2 id="keynavUpDown-label">List of Items 1 - nav with up/down or left/right keys</h2>
             <ul id="keynavUpDown-list1" aria-labelledby="keynavUpDown-label" data-knw-list>
                 <li data-knw-list-item id="test1">List Item A</li>
                 <li data-knw-list-item>List Item B</li>
@@ -57,7 +57,9 @@
             // Add hotkeys (searched from DOM)
             KeynavWeb.Hotkeys.init();
 
+            // Add keynav (searched from DOM)
             KeynavWeb.Keynav.init({
+                // EXAMPLE: custom callbacks
                 // activateCb: function(item) {
                 //     console.log('activateCb test, item=', item);
                 //     if (!item) { return; }
@@ -75,6 +77,32 @@
                 //         item.setAttribute('tabindex', '-1');
                 //     }
                 // },
+                // EXAMPLE: Key overrides
+                customKeys: {
+                    // NEXT: {
+                    //     keys: ['ArrowRight'],
+                    //     // WARNING: run must NOT be an arrow function because would get bound to wrong `this`
+                    //     run: function(e) {
+                    //         e.preventDefault();
+                    //         const next = this.getNext(e.target);
+                    //         this.focusCb({item: next});
+                    //     }
+                    // },
+                    // PREV: {
+                    //     keys: ['ArrowLeft'],
+                    //     run: function(e) {
+                    //         e.preventDefault();
+                    //         const prev = this.getPrev(e.target);
+                    //         this.focusCb({item: prev});
+                    //     }
+                    // },
+                    TEST: {
+                        keys: ['t', 'y'],
+                        run: function(e) {
+                            alert('test T and Y');
+                        }
+                    }
+                }
             });
 
             //
