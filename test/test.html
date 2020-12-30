@@ -9,15 +9,17 @@
     <h1>Keynav Tests</h1>
 
     <section aria-labelledby="hotkeytest-label">
-        <h1 id="hotkeytest-label">Hotkey Test</h1>
+        <h2 id="hotkeytest-label">Hotkey Test</h2>
+        <p>Trigger below Hotkeys with either <kbd>x</kbd> or <kbd>Ctrl+X</kbd></p>
         <button id="xtest" data-knw-hotkey="x">Hotkey <key>x</key> triggered me</button>
         <button id="ctrlxtest" data-knw-hotkey="ctrl+x">Hotkey <key>ctrl+x</key> triggered me</button>
     </section>
 
     <section aria-labelledby="keynavtest-label">
-        <h1 id="keynavtest-label">Keynav Tests</h1>
+        <h2 id="keynavtest-label">Keynav Tests</h2>
+        <p>Navigate lists with <kbd>up/down/left/right/home/end</kbd>. Activate a list item with <kbd>Enter</kbd> (or Click). Delete a list item with <kbd>del</kbd> and test key combinations with either <kbd>Shift+ArrowRight</kbd> or <kbd>Ctrl+Enter</kbd>.</p>
         <div>
-            <h2 id="keynavUpDown-label">List of Items 1 - nav with up/down or left/right keys</h2>
+            <h3 id="keynavUpDown-label">List of Items 1 - nav with up/down or left/right keys</h3>
             <ul id="keynavUpDown-list1" aria-labelledby="keynavUpDown-label" data-knw-list>
                 <li data-knw-list-item id="test1">List Item A</li>
                 <li data-knw-list-item>List Item B</li>
@@ -27,7 +29,7 @@
             <output aria-label="List item activated" aria-live="polite" aria-relevant="additions" id="keynavUpDown-output"/>
         </div>
         <div>
-            <h2 id="keynavUpDown2-label">List of Items 2 - check multiple lists work</h2>
+            <h3 id="keynavUpDown2-label">List of Items 2 - check multiple lists work</h3>
             <ul id="keynavUpDown2-list" aria-labelledby="keynavUpDown2-label" data-knw-list>
                 <li>Not In List</li>
                 <li tabindex="-1" data-knw-list-item>List Item B</li>
@@ -97,9 +99,9 @@
                     //     }
                     // },
                     TEST: {
-                        keys: ['t', 'y'],
+                        keys: ['Shift+ArrowRight', 'Ctrl+Enter'],
                         run: function(e) {
-                            alert('test T and Y');
+                            alert('TEST! either ' + 'Shift+ArrowRight or ' + 'Ctrl+Enter');
                         }
                     }
                 }
