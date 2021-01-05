@@ -8,12 +8,12 @@
 
     <h1>Keynav Tests</h1>
 
-    <section aria-labelledby="hotkeytest-label">
+    <!-- <section aria-labelledby="hotkeytest-label">
         <h2 id="hotkeytest-label">Hotkey Test</h2>
         <p>Trigger below Hotkeys with either <kbd>x</kbd> or <kbd>Ctrl+X</kbd></p>
         <button id="xtest" data-knw-hotkey="x">Hotkey <key>x</key> triggered me</button>
         <button id="ctrlxtest" data-knw-hotkey="ctrl+x">Hotkey <key>ctrl+x</key> triggered me</button>
-    </section>
+    </section> -->
 
     <section aria-labelledby="keynavtest-label">
         <h2 id="keynavtest-label">Keynav Tests</h2>
@@ -40,6 +40,34 @@
         </div>
     </section>
 
+    <section aria-labelledby="keynavtest-label3">
+        <h2 id="keynavtest-label3">Keynav Tests on Containers</h2>
+
+
+        <button data-knw-hotkey-root-key='p'>Key P</button>
+        <button data-knw-hotkey-root-key='p'>Key O</button>
+        <button data-knw-hotkey-root-key='p'>Key I</button>
+
+
+        <div>
+            <div data-knw-hotkey>
+                <button data-knw-hotkey-key='p'>Key P</button>
+                <button data-knw-hotkey-key='p'>Key O</button>
+                <button data-knw-hotkey-key='p'>Key I</button>
+            </div>
+
+            <div data-knw-hotkey>
+                <button data-knw-hotkey-key='p'>Key U</button>
+                <button data-knw-hotkey-key='p'>Key Y</button>
+                <button data-knw-hotkey-key='p'>Key T</button>
+            </div>
+        </div>
+
+        <div>
+            <button>Key B</button>
+        </div>
+    </section>
+
     <!-- 
         CORS... must load file on Server for modules (ES does XHR req for mods):
         <script type="module" src="../keynav-web.js"></script>
@@ -56,8 +84,15 @@
         console.log('KeynavWeb.Keynav=', KeynavWeb.Keynav);
 
         document.addEventListener('DOMContentLoaded', function() {
+            // V2 of Hotkeys
+            // const hotkeys2 = new KeynavWeb.Hotkeys2();
+
             // Add hotkeys (searched from DOM)
-            KeynavWeb.Hotkeys.init();
+            KeynavWeb.Hotkeys.init({
+                roleSelector: 'data-knw-hotkey',
+                propertySelector: 'data-knw-hotkey-key'
+            });
+
 
             // Add keynav (searched from DOM)
             KeynavWeb.Keynav.init({
@@ -112,12 +147,12 @@
             //
             
             // "Click" Handlers for Triggered Hotkeys
-            xtest.addEventListener('click', function() {
-                alert('x keyed and triggered me -or- i was clicked')
-            });
-            ctrlxtest.addEventListener('click', function() {
-                alert('ctrl+x keyed and triggered me -or- i was clicked')
-            });
+            // xtest.addEventListener('click', function() {
+            //     alert('x keyed and triggered me -or- i was clicked')
+            // });
+            // ctrlxtest.addEventListener('click', function() {
+            //     alert('ctrl+x keyed and triggered me -or- i was clicked')
+            // });
 
             // Set some behavior for when a list element is activated
             const listEl = document.querySelector('#keynavUpDown-list1');
