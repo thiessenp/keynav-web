@@ -9,16 +9,10 @@
     <h1>Keynav: List Tests</h1>
 
     <p>Navigate lists with <kbd>up/down/left/right/home/end</kbd>. Activate a list item with <kbd>Enter</kbd> (or Click). Delete a list item with <kbd>del</kbd> and test key combinations with either <kbd>Shift+ArrowRight</kbd> or <kbd>Ctrl+Enter</kbd>.</p>
-
-    <!-- <section aria-labelledby="hotkeytest-label">
-        <h2 id="hotkeytest-label">Hotkey Test</h2>
-        <p>Trigger below Hotkeys with either <kbd>x</kbd> or <kbd>Ctrl+X</kbd></p>
-        <button id="xtest" data-knw-hotkey="x">Hotkey <key>x</key> triggered me</button>
-        <button id="ctrlxtest" data-knw-hotkey="ctrl+x">Hotkey <key>ctrl+x</key> triggered me</button>
-    </section> -->
+    <p>NOTE: ListNav recommended for most cases. It is simpler and uses delegation so lists can be dynamic. ListNavConfigurable is complex, uses static lists but can be comletely customize keys and actions.</p>
 
     <section aria-labelledby="listSimple1-label">
-        <h3 id="listSimple1-label">Simple List using UL and LI's</h3>
+        <h3 id="listSimple1-label">ListNav using UL and LI's</h3>
         <ul class="listSimple1" aria-labelledby="listSimple1-label">
             <li>List Item A</li>
             <li>List Item B</li>
@@ -29,7 +23,7 @@
     </section>
 
     <section aria-labelledby="listSimple2-label">
-        <h3 id="listSimple2-label">Simple List using DIV's</h3>
+        <h3 id="listSimple2-label">ListNav using DIV's</h3>
         <div class="listSimple2" aria-labelledby="listSimple2-label">
             <div><span>List Item A</span></div>
             <div><span>List Item B</span></div>
@@ -40,14 +34,24 @@
     </section>
 
     <section aria-labelledby="listComplex1-label">
-        <h3 id="listComplex1-label">Complex List using UL and LI's</h3>
+        <h3 id="listComplex1-label">ListNavConfigurable using data-attribute selectors with UL and LI's</h3>
         <ul class="listComplex1-list" aria-labelledby="listComplex1-label" data-knw-list>
             <li>Not In List</li>
             <li tabindex="-1" data-knw-list-item>List Item B</li>
             <li data-knw-list-item>List Item C (start missing tabindex)</li>
             <li tabindex="0" data-knw-list-item>List Item A (start tabindex=0")</li>
         </ul>
-        <output aria-label="List item activated" aria-live="polite" aria-relevant="additions" id="keynavUpDown2-output"></output>
+        <output aria-label="List item activated" aria-live="polite" aria-relevant="additions" class="listComplex1-output"></output>
+    </section>
+
+    <section aria-labelledby="listComplex2-label">
+        <h3 id="listComplex2-label">ListNavConfigurable using data-attribute selectors with DIVs</h3>
+        <div class="listComplex2-list" aria-labelledby="listComplex2-label" data-knw-list>
+            <div data-knw-list-item>List Item A</div>
+            <div data-knw-list-item>List Item B</div>
+            <div data-knw-list-item>List Item C</div>
+        </ul>
+        <output aria-label="List item activated" aria-live="polite" aria-relevant="additions" class="listComplex2-output"></output>
     </section>
 
     <!-- 
@@ -62,110 +66,65 @@
     <script src="../dist/index.js"></script>
     <script>
         console.log('KeynavWeb=', KeynavWeb);
-        console.log('KeynavWeb.SimpleList=', KeynavWeb.ListSimple);
-        console.log('KeynavWeb.List=', KeynavWeb.List);
+        console.log('KeynavWeb.SimpleList=', KeynavWeb.ListNav);
+        console.log('KeynavWeb.List=', KeynavWeb.ListNavConfigurable);
 
         document.addEventListener('DOMContentLoaded', function() {
 
             // ListSimple: attach basic keynav to a list
-            const listSimple1 = new KeynavWeb.ListSimple({
+            const listSimple1 = new KeynavWeb.ListNav({
                 listEl: document.querySelector('.listSimple1'),
                 listItemsSelector: '.listSimple1 > li'
             });
             doSomething({items:'.listSimple1 > li', output:'.listSimple1-output'});
+ 
             // ListSimple: same but with nested child items
-            const listSimple2 = new KeynavWeb.ListSimple({
+            const listSimple2 = new KeynavWeb.ListNav({
                 listEl: document.querySelector('.listSimple2'),
                 listItemsSelector: '.listSimple2 > div span'
             });
             doSomething({items: '.listSimple2 > div span', output:'.listSimple2-output'});
 
             // TODO: listComplex1
-
-
-            // Add keynav (searched from DOM)
-            // KeynavWeb.Keynav.init({
-                // EXAMPLE: custom callbacks
-                // activateCb: function(item) {
-                //     console.log('activateCb test, item=', item);
-                //     if (!item) { return; }
-                //     // Only update if el is not currently active, avoids DOM confusion
-                //     if(item.getAttribute('tabindex') !== '0') {
-                //         // // Remove any old state to make way for the New Active!
-                //         // this.removeActive();
-                //         item.setAttribute('tabindex', '0');
-                //     }
-                // },
-                // deactivateCb: function(item) {
-                //     console.log('deactivateCb test, item=', item);
-                //     if (!item) { return; }
-                //     if (item.getAttribute('tabindex') !== '-1') {
-                //         item.setAttribute('tabindex', '-1');
-                //     }
-                // },
-                // EXAMPLE: Key overrides
-                // customKeys: {
-                    // NEXT: {
-                    //     keys: ['ArrowRight'],
-                    //     // WARNING: run must NOT be an arrow function because would get bound to wrong `this`
-                    //     run: function(e) {
-                    //         e.preventDefault();
-                    //         const next = this.getNext(e.target);
-                    //         this.focusCb({item: next});
-                    //     }
-                    // },
-                    // PREV: {
-                    //     keys: ['ArrowLeft'],
-                    //     run: function(e) {
-                    //         e.preventDefault();
-                    //         const prev = this.getPrev(e.target);
-                    //         this.focusCb({item: prev});
-                    //     }
-                    // },
-            //         TEST: {
-            //             keys: ['Shift+ArrowRight', 'Ctrl+Enter'],
-            //             run: function(e) {
-            //                 alert('TEST! either ' + 'Shift+ArrowRight or ' + 'Ctrl+Enter');
-            //             }
-            //         }
-            //     }
-            // });
-
-            //
-            // Add custom behavior to test Above hotkeys and keynav
-            //
-
-
-
-            // // Set some behavior for when a list element is activated
-            // const listEl = document.querySelector('.listSimple');
-            // const childrenElArr = Array.prototype.slice.call(listEl.children);
-            // const outputEl = document.querySelector('#keynavUpDown-output');
-            // childrenElArr.forEach(function(el) {
-            //     el.addEventListener('focus', function(e) {
-            //         console.log('focus', e);
-            //     });
-            //     el.addEventListener('click', function(e) {
-            //         console.log('click', e.target.textContent);
-            //         updateOutput(outputEl, 'You activated ' + e.target.textContent);
-            //     });
-            // });
-
-            // // Copied from above - abstract out if copy again :)
-            // const listEl2 = document.querySelector('#keynavUpDown2-list');
-            // const childrenElArr2 = Array.prototype.slice.call(listEl2.children);
-            // const outputEl2 = document.querySelector('#keynavUpDown2-output');
-            // childrenElArr2.forEach(function(el) {
-            //     el.addEventListener('focus', function(e) {
-            //         console.log('focus', e);
-            //     });
-            //     el.addEventListener('click', function(e) {
-            //         console.log('click', e.target.textContent);
-            //         updateOutput(outputEl2, 'You activated ' + e.target.textContent);
-            //     });
-            // });
+            KeynavWeb.ListNavConfigurableBuilder({
+                //EXAMPLE: custom callbacks
+                activateCb: function({item}) {
+                    console.log('Custom Test: activateCb, item=', item);
+                    if (!item) { return; }
+                    // Only update if el is not currently active, avoids DOM confusion
+                    if(item.getAttribute('tabindex') !== '0') {
+                        // // Remove any old state to make way for the New Active!
+                        // this.removeActive();
+                        item.setAttribute('tabindex', '0');
+                    }
+                },
+                //EXAMPLE: Key overrides
+                customKeys: {
+                    NEXT: {
+                        keys: ['ArrowDown', 'ArrowRight'],
+                        // WARNING: run must NOT be an arrow function because would get bound to wrong `this`
+                        run: function(e) {
+                            e.preventDefault();
+                            const next = this.getNext(e.target);
+                            this.focusCb({item: next});
+                            console.log('Custom Test: ArrowDown/ArrowRight test, next=', next);
+                        }
+                    },
+                    TEST: {
+                        keys: ['Shift+ArrowRight', 'Ctrl+Enter'],
+                        run: function(e) {
+                            alert('TEST! either ' + 'Shift+ArrowRight or ' + 'Ctrl+Enter');
+                        }
+                    }
+                }
+            });
+            doSomething({items: '.listComplex1-list [data-knw-list-item]', output:'.listComplex1-output'});
+            doSomething({items: '.listComplex2-list [data-knw-list-item]', output:'.listComplex2-output'});
         });
 
+        //
+        // Add custom behavior to test Above hotkeys and keynav
+        //
         function doSomething({items, output}) {
             let itemEls = Array.from(document.querySelectorAll(items));
             let outputEl = document.querySelector(output);
@@ -179,13 +138,6 @@
                 });
             });
         }
-
-
-        // function updateOutput(el, content) { 
-        //     // innerHtml only updated DOM not text it seems?
-        //     // el.innerHtml = content;
-        //     el.textContent = content;
-        // }
     </script>
 </body>
 </html>
