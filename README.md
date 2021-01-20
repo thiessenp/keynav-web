@@ -1,17 +1,42 @@
 # keynav-web
-keyboard navigation for web based UIs
+keyboard navigation for web based UIs.
 
+*TODO Fix hotkeys*
 *TODO IE11 support using babel*
 
-Note: Webpack has trouble importing projects created with Webpack, so includes the source in publish. BUT this ran into a Webpack error also where it would not run the babel-loader for imported libs. BUTx2 the built webpack project seems to be working as an import in another webpack project... "le sigh..." So, remove this from the package.json for now: 
+## Keynav for Lists
+
+Adds Keyboard navigation to HTML elements through data attributes.
+
+User behavior would be tabbing to the container UL and then keying down and 
+up through the list element. Once in the list, tabbing again would either 
+navigate to a tabable element in that list item or the next tabable element 
+in the DOM.
+
+Example Usage:
 ```
-// this alows projects that use the import ES6 style to auto chose the lib src -- TODO: add back later
-"module": "lib/index.js",
+// JS: Once DOM ready
+const listSimple1 = new KeynavWeb.ListNav({
+    listEl: document.querySelector('.listSimple1'),
+    listItemsSelector: '.listSimple1 > li'
+});
+
+// JS: Add Behavior?
+// Each list item has a listener to trigger a click on keying Enter or Space.
+// This way any click listeners on a list element would fire.
+doSomething({items:'.listSimple1 > li', output:'.listSimple1-output'});
+
+// HTML: add keynav to a list using data-knw-keynav-list
+...
+<div class="listSimple2" aria-labelledby="listSimple2-label">
+    <div><span>List Item A</span></div>
+    <div><span>List Item B</span></div>
+    <div><span>List Item C</span></div>
+</div>
+...
 ```
 
-## APIS
-
-### Hotkeys
+## Keynav for Hotkeys
 Creates a list of hotkeys from the data attributes in the DOM. The list maps each hotkey to an element to be used for triggering. 
 
 Example:
@@ -31,38 +56,19 @@ KeynavWeb.hotkeys.init();
 </li>
 ```
 
-### Lists
+## Development
 
-Adds Keyboard navigation to HTML elements through data attributes.
-
-User behavior would be tabbing to the container UL and then keying down and 
-up through the list element. Once in the list, tabbing again would either 
-navigate to a tabable element in that list item or the next tabable element 
-in the DOM.
-
-Example Usage:
+Note: Webpack has trouble importing projects created with Webpack, so includes the source in publish. BUT this ran into a Webpack error also where it would not run the babel-loader for imported libs. BUTx2 the built webpack project seems to be working as an import in another webpack project... "le sigh..." So, remove this from the package.json for now: 
 ```
-// JS: Once DOM ready
-KeynavWeb.keynav.init()    // Or if using this file directly: Keynav.init()
-
-// JS: Add Behavior?
-// Each list item has a listener to trigger a click on keying Enter or Space.
-// This way any click listeners on a list element would fire.
-
-// HTML: add keynav to a list using data-knw-keynav-list
-<h2 id="keynavUpDown-label">List of Items - nav with up or down keys</h2>
-<ul data-knw-keynav-list id="keynavUpDown-list" aria-labelledby="keynavUpDown-label">
-    <li tabindex="-1">List Item A</li>
-    <li tabindex="-1" data-knw-keynav-list-active>List Item B</li>
-    <li tabindex="-1">List Item C</li>
-</ul>
+// this alows projects that use the import ES6 style to auto chose the lib src -- TODO: add back later
+"module": "lib/index.js",
 ```
 
-## Test/Example
+### Test/Example
 
 Run a quick test/example by loading `./test/test.html` in a server and trying keynav.
 
-## Publishing
+### Publishing
 
 On windows, powershell has trouble with executing npm scripts so use Command 
 Prompt:
