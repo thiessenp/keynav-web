@@ -2,71 +2,52 @@
 <html lang="en-us">
 <head>
     <meta charset="utf-8">
-    <title>Keynav Tests</title>
+    <title>Keynav Hotkeys</title>
 </head>
 <body>
+    <h1>Keynav Hotkeys</h1>
 
-    <h1>Keynav Tests</h1>
+    <section aria-labelledby="hotkeytest-global-label">
+        <h2 id="hotkeytest-global-label">Hotkey Test</h2>
+        <p><button id="enableGlobalHotkeys">enable global hotkeys</button></p>
 
-    <!-- <section aria-labelledby="hotkeytest-label">
-        <h2 id="hotkeytest-label">Hotkey Test</h2>
-        <p>Trigger below Hotkeys with either <kbd>x</kbd> or <kbd>Ctrl+X</kbd></p>
-        <button id="xtest" data-knw-hotkey="x">Hotkey <key>x</key> triggered me</button>
-        <button id="ctrlxtest" data-knw-hotkey="ctrl+x">Hotkey <key>ctrl+x</key> triggered me</button>
-    </section> -->
-
-    <section aria-labelledby="keynavtest-label">
-        <h2 id="keynavtest-label">Keynav Tests</h2>
-        <p>Navigate lists with <kbd>up/down/left/right/home/end</kbd>. Activate a list item with <kbd>Enter</kbd> (or Click). Delete a list item with <kbd>del</kbd> and test key combinations with either <kbd>Shift+ArrowRight</kbd> or <kbd>Ctrl+Enter</kbd>.</p>
+        Single Key Test:
         <div>
-            <h3 id="keynavUpDown-label">List of Items 1 - nav with up/down or left/right keys</h3>
-            <ul id="keynavUpDown-list1" aria-labelledby="keynavUpDown-label" data-knw-list>
-                <li data-knw-list-item id="test1">List Item A</li>
-                <li data-knw-list-item>List Item B</li>
-                <li data-knw-list-item>List Item C</li>
-                <li data-knw-list-item>List Item D</li>
-            </ul>
-            <output aria-label="List item activated" aria-live="polite" aria-relevant="additions" id="keynavUpDown-output"/>
+            <button data-knw-hotkeys-key='a'>Key a</button>
+            <button data-knw-hotkeys-key='b'>Key b</button>
+            <button data-knw-hotkeys-key='c'>Key c</button>
         </div>
+
+        Multi key Test:
         <div>
-            <h3 id="keynavUpDown2-label">List of Items 2 - check multiple lists work</h3>
-            <ul id="keynavUpDown2-list" aria-labelledby="keynavUpDown2-label" data-knw-list>
-                <li>Not In List</li>
-                <li tabindex="-1" data-knw-list-item>List Item B</li>
-                <li data-knw-list-item>List Item C (start missing tabindex)</li>
-                <li tabindex="0" data-knw-list-item>List Item A (start tabindex=0")</li>
-            </ul>
-            <output aria-label="List item activated" aria-live="polite" aria-relevant="additions" id="keynavUpDown2-output"></output>
+            <button data-knw-hotkeys-key="ctrl+x">Hotkey <key>ctrl+x</key> triggered me</button>
+            <button data-knw-hotkeys-key="ctrl+y">Hotkey <key>ctrl+y</key> triggered me</button>
         </div>
+        <output aria-label="Hotkey activated" aria-live="polite" aria-relevant="additions" class="hotkeytest-global-output"/>
     </section>
 
-    <section aria-labelledby="keynavtest-label3">
-        <h2 id="keynavtest-label3">Keynav Tests on Containers</h2>
-
-
-        <button data-knw-hotkey-root-key='p'>Key P</button>
-        <button data-knw-hotkey-root-key='p'>Key O</button>
-        <button data-knw-hotkey-root-key='p'>Key I</button>
-
-
+    <section aria-labelledby="keynavtest-dialog-label" data-knw-hotkeys-dialog>
+        <h2 id="keynavtest-dialog-label">Diaolog 1 Test</h2>
+        <p><button id="enableDialogHotkeys1">Enable Dialog Hotkeys 1</button></p>
         <div>
-            <div data-knw-hotkey>
-                <button data-knw-hotkey-key='p'>Key P</button>
-                <button data-knw-hotkey-key='p'>Key O</button>
-                <button data-knw-hotkey-key='p'>Key I</button>
-            </div>
-
-            <div data-knw-hotkey>
-                <button data-knw-hotkey-key='p'>Key U</button>
-                <button data-knw-hotkey-key='p'>Key Y</button>
-                <button data-knw-hotkey-key='p'>Key T</button>
-            </div>
+            <button data-knw-hotkeys-dialog-key='d'>Key d</button>
+            <button data-knw-hotkeys-dialog-key='e'>Key e</button>
+            <button data-knw-hotkeys-dialog-key='f'>Key f</button>
         </div>
-
-        <div>
-            <button>Key B</button>
-        </div>
+        <output aria-label="Hotkey activated" aria-live="polite" aria-relevant="additions" class="hotkeytest-dialog-output1"/>
     </section>
+
+    <section aria-labelledby="keynavtest-dialog-label2" data-knw-hotkeys-dialog>
+        <h2 id="keynavtest-dialog-label2">Diaolog 2 Test</h2>
+        <p><button id="enableDialogHotkeys2">Enable Dialog Hotkeys 2</button></p>
+        <div>
+            <button data-knw-hotkeys-dialog-key='g'>Key g</button>
+            <button data-knw-hotkeys-dialog-key='h'>Key h</button>
+            <button data-knw-hotkeys-dialog-key='i'>Key i</button>
+        </div>
+        <output aria-label="Hotkey activated" aria-live="polite" aria-relevant="additions" class="hotkeytest-dialog-output2"/>
+    </section>
+
 
     <!-- 
         CORS... must load file on Server for modules (ES does XHR req for mods):
@@ -79,114 +60,54 @@
      -->
     <script src="../dist/index.js"></script>
     <script>
-        console.log('KeynavWeb=', KeynavWeb);
-        console.log('KeynavWeb.Hotkeys=', KeynavWeb.Hotkeys);
-        console.log('KeynavWeb.Keynav=', KeynavWeb.Keynav);
-
+        // console.log('KeynavWeb=', KeynavWeb);
+        // console.log('KeynavWeb.Hotkeys=', KeynavWeb.Hotkeys);
         document.addEventListener('DOMContentLoaded', function() {
-            // V2 of Hotkeys
-            // const hotkeys2 = new KeynavWeb.Hotkeys2();
+ 
+            // Create global hotkeys
+            let globalHotkeysEls = Array.from(document.querySelectorAll('[data-knw-hotkeys-key]') || []);
+            const globalHotkeys = new KeynavWeb.Hotkeys({items: globalHotkeysEls});
+            document.querySelector("#enableGlobalHotkeys").onclick = function() {
+                globalHotkeys.pub({ topic: 'knw.hotkeys.activate' });
+                console.log('Test Global: globalHotkeys=', globalHotkeys, 'dialogsHotkeys=', dialogsHotkeys);
+            };
+            doSomething({items: '[data-knw-hotkeys-key]', output:'.hotkeytest-global-output'});
 
-            // Add hotkeys (searched from DOM)
-            KeynavWeb.Hotkeys.init({
-                roleSelector: 'data-knw-hotkey',
-                propertySelector: 'data-knw-hotkey-key'
-            });
-
-
-            // Add keynav (searched from DOM)
-            KeynavWeb.Keynav.init({
-                // EXAMPLE: custom callbacks
-                // activateCb: function(item) {
-                //     console.log('activateCb test, item=', item);
-                //     if (!item) { return; }
-                //     // Only update if el is not currently active, avoids DOM confusion
-                //     if(item.getAttribute('tabindex') !== '0') {
-                //         // // Remove any old state to make way for the New Active!
-                //         // this.removeActive();
-                //         item.setAttribute('tabindex', '0');
-                //     }
-                // },
-                // deactivateCb: function(item) {
-                //     console.log('deactivateCb test, item=', item);
-                //     if (!item) { return; }
-                //     if (item.getAttribute('tabindex') !== '-1') {
-                //         item.setAttribute('tabindex', '-1');
-                //     }
-                // },
-                // EXAMPLE: Key overrides
-                customKeys: {
-                    // NEXT: {
-                    //     keys: ['ArrowRight'],
-                    //     // WARNING: run must NOT be an arrow function because would get bound to wrong `this`
-                    //     run: function(e) {
-                    //         e.preventDefault();
-                    //         const next = this.getNext(e.target);
-                    //         this.focusCb({item: next});
-                    //     }
-                    // },
-                    // PREV: {
-                    //     keys: ['ArrowLeft'],
-                    //     run: function(e) {
-                    //         e.preventDefault();
-                    //         const prev = this.getPrev(e.target);
-                    //         this.focusCb({item: prev});
-                    //     }
-                    // },
-                    TEST: {
-                        keys: ['Shift+ArrowRight', 'Ctrl+Enter'],
-                        run: function(e) {
-                            alert('TEST! either ' + 'Shift+ArrowRight or ' + 'Ctrl+Enter');
-                        }
-                    }
-                }
-            });
-
-            //
-            // Add custom behavior to test Above hotkeys and keynav
-            //
-            
-            // "Click" Handlers for Triggered Hotkeys
-            // xtest.addEventListener('click', function() {
-            //     alert('x keyed and triggered me -or- i was clicked')
-            // });
-            // ctrlxtest.addEventListener('click', function() {
-            //     alert('ctrl+x keyed and triggered me -or- i was clicked')
-            // });
-
-            // Set some behavior for when a list element is activated
-            const listEl = document.querySelector('#keynavUpDown-list1');
-            const childrenElArr = Array.prototype.slice.call(listEl.children);
-            const outputEl = document.querySelector('#keynavUpDown-output');
-            childrenElArr.forEach(function(el) {
-                el.addEventListener('focus', function(e) {
-                    console.log('focus', e);
-                });
-                el.addEventListener('click', function(e) {
-                    console.log('click', e.target.textContent);
-                    updateOutput(outputEl, 'You activated ' + e.target.textContent);
+            // Test Dialogs
+            // Create dialog hotkeys
+            let dialogsHotkeysEls = Array.from(document.querySelectorAll('[data-knw-hotkeys-dialog]') || []);
+            const dialogsHotkeys = dialogsHotkeysEls.map((dialogsHotkeysEl, index) => {
+                const dialogsHotkeysElKeys =  Array.from(dialogsHotkeysEl.querySelectorAll('[data-knw-hotkeys-dialog-key]') || []);
+                doSomething({itemsList: dialogsHotkeysElKeys, output:`.hotkeytest-dialog-output${index+1}`});
+                return new KeynavWeb.Hotkeys({
+                    containerEl: dialogsHotkeysEl,
+                    items: dialogsHotkeysElKeys, 
+                    isGlobal: false, 
+                    isActive: false
                 });
             });
-
-            // Copied from above - abstract out if copy again :)
-            const listEl2 = document.querySelector('#keynavUpDown2-list');
-            const childrenElArr2 = Array.prototype.slice.call(listEl2.children);
-            const outputEl2 = document.querySelector('#keynavUpDown2-output');
-            childrenElArr2.forEach(function(el) {
-                el.addEventListener('focus', function(e) {
-                    console.log('focus', e);
-                });
-                el.addEventListener('click', function(e) {
-                    console.log('click', e.target.textContent);
-                    updateOutput(outputEl2, 'You activated ' + e.target.textContent);
-                });
-            });
+            document.querySelector("#enableDialogHotkeys1").onclick = function() {
+                dialogsHotkeys[0].pub({ topic: 'knw.hotkeys.activateDialog' });
+                console.log('Test Dialog1: globalHotkeys=', globalHotkeys, 'dialogsHotkeys=', dialogsHotkeys);
+            };
+            document.querySelector("#enableDialogHotkeys2").onclick = function() {
+                dialogsHotkeys[1].pub({ topic: 'knw.hotkeys.activateDialog' });
+                console.log('Test Dialog2: globalHotkeys=', globalHotkeys, 'dialogsHotkeys=', dialogsHotkeys);
+            };
         });
 
-        function updateOutput(el, content) { 
-            // innerHtml only updated DOM not text it seems?
-            // el.innerHtml = content;
-            el.textContent = content;
+        function doSomething({items, output, itemsList}) {
+            let itemEls = itemsList || Array.from(document.querySelectorAll(items));
+            let outputEl = document.querySelector(output);
+
+            itemEls.forEach(function(itemEl) {
+                itemEl.addEventListener('click', function(e) {
+                    // innerHtml only updated DOM not text it seems?
+                    // el.innerHtml = content;
+                    // e.target.textContent = content;
+                    outputEl.textContent = `You activated: ${e.target.textContent}`;
+                });
+            });
         }
     </script>
 </body>
