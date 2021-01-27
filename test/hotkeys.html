@@ -8,16 +8,14 @@
     <h1>Keynav Hotkeys</h1>
 
     <section aria-labelledby="hotkeytest-global-label">
-        <h2 id="hotkeytest-global-label">Hotkey Test</h2>
-        <p><button id="enableGlobalHotkeys">enable global hotkeys</button></p>
-
+        <h2 id="hotkeytest-global-label">Hotkey Test <button id="enableGlobalHotkeys">Enable Global Hotkeys</button></h2>
         Single Key Test:
         <div>
             <button data-knw-hotkeys-key='a'>Key a</button>
             <button data-knw-hotkeys-key='b'>Key b</button>
             <button data-knw-hotkeys-key='c'>Key c</button>
         </div>
-
+        <br>
         Multi key Test:
         <div>
             <button data-knw-hotkeys-key="ctrl+x">Hotkey <key>ctrl+x</key> triggered me</button>
@@ -26,9 +24,10 @@
         <output aria-label="Hotkey activated" aria-live="polite" aria-relevant="additions" class="hotkeytest-global-output"/>
     </section>
 
+    <br><br>
+
     <section aria-labelledby="keynavtest-dialog-label" data-knw-hotkeys-dialog>
-        <h2 id="keynavtest-dialog-label">Diaolog 1 Test</h2>
-        <p><button id="enableDialogHotkeys1">Enable Dialog Hotkeys 1</button></p>
+        <h2 id="keynavtest-dialog-label">Diaolog 1 Test <button id="enableDialogHotkeys1">Enable Dialog Hotkeys 1</button></h2>
         <div>
             <button data-knw-hotkeys-dialog-key='d'>Key d</button>
             <button data-knw-hotkeys-dialog-key='e'>Key e</button>
@@ -37,9 +36,10 @@
         <output aria-label="Hotkey activated" aria-live="polite" aria-relevant="additions" class="hotkeytest-dialog-output1"/>
     </section>
 
+    <br><br>
+
     <section aria-labelledby="keynavtest-dialog-label2" data-knw-hotkeys-dialog>
-        <h2 id="keynavtest-dialog-label2">Diaolog 2 Test</h2>
-        <p><button id="enableDialogHotkeys2">Enable Dialog Hotkeys 2</button></p>
+        <h2 id="keynavtest-dialog-label2">Diaolog 2 Test <button id="enableDialogHotkeys2">Enable Dialog Hotkeys 2</button></h2>
         <div>
             <button data-knw-hotkeys-dialog-key='g'>Key g</button>
             <button data-knw-hotkeys-dialog-key='h'>Key h</button>
@@ -47,7 +47,6 @@
         </div>
         <output aria-label="Hotkey activated" aria-live="polite" aria-relevant="additions" class="hotkeytest-dialog-output2"/>
     </section>
-
 
     <!-- 
         CORS... must load file on Server for modules (ES does XHR req for mods):
@@ -71,21 +70,24 @@
                 globalHotkeys.pub({ topic: 'knw.hotkeys.activate' });
                 console.log('Test Global: globalHotkeys=', globalHotkeys, 'dialogsHotkeys=', dialogsHotkeys);
             };
+            // Enable/Disable global hotkeys by button
             doSomething({items: '[data-knw-hotkeys-key]', output:'.hotkeytest-global-output'});
 
             // Test Dialogs
             // Create dialog hotkeys
             let dialogsHotkeysEls = Array.from(document.querySelectorAll('[data-knw-hotkeys-dialog]') || []);
             const dialogsHotkeys = dialogsHotkeysEls.map((dialogsHotkeysEl, index) => {
-                const dialogsHotkeysElKeys =  Array.from(dialogsHotkeysEl.querySelectorAll('[data-knw-hotkeys-dialog-key]') || []);
-                doSomething({itemsList: dialogsHotkeysElKeys, output:`.hotkeytest-dialog-output${index+1}`});
-                return new KeynavWeb.Hotkeys({
+                const dialogsHotkeysElKeys = dialogsHotkeysEl.querySelectorAll('[data-knw-hotkeys-dialog-key]');
+                const hotkeys = new KeynavWeb.Hotkeys({
                     containerEl: dialogsHotkeysEl,
                     items: dialogsHotkeysElKeys, 
                     isGlobal: false, 
                     isActive: false
                 });
+                doSomething({itemsList: dialogsHotkeysElKeys, output:`.hotkeytest-dialog-output${index+1}`});
+                return hotkeys;
             });
+            // Enable/Disable Dialogs by button
             document.querySelector("#enableDialogHotkeys1").onclick = function() {
                 dialogsHotkeys[0].pub({ topic: 'knw.hotkeys.activateDialog' });
                 console.log('Test Dialog1: globalHotkeys=', globalHotkeys, 'dialogsHotkeys=', dialogsHotkeys);
@@ -99,7 +101,6 @@
         function doSomething({items, output, itemsList}) {
             let itemEls = itemsList || Array.from(document.querySelectorAll(items));
             let outputEl = document.querySelector(output);
-
             itemEls.forEach(function(itemEl) {
                 itemEl.addEventListener('click', function(e) {
                     // innerHtml only updated DOM not text it seems?
