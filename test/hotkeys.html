@@ -67,10 +67,16 @@
         // console.log('KeynavWeb=', KeynavWeb);
         // console.log('KeynavWeb.Hotkeys=', KeynavWeb.Hotkeys);
         document.addEventListener('DOMContentLoaded', function() {
- 
+
             // Create global hotkeys
-            let globalHotkeysEls = Array.from(document.querySelectorAll('[data-knw-hotkeys-key]') || []);
-            const globalHotkeys = new KeynavWeb.Hotkeys({items: globalHotkeysEls});
+            // WAY 1: custom
+            // let globalHotkeysEls = Array.from(document.querySelectorAll('[data-knw-hotkeys-key]') || []);
+            // const globalHotkeys = new KeynavWeb.Hotkeys({items: globalHotkeysEls});
+            //
+            // WAY 2: builder
+            const globalHotkeys = KeynavWeb.Hotkeys.buildGlobal({
+                selectorHotkeys: '[data-knw-hotkeys-key]'
+            });
             document.querySelector("#enableGlobalHotkeys").onclick = function() {
                 globalHotkeys.pub({ topic: 'knw.hotkeys.activate' });
                 console.log('Test Global: globalHotkeys=', globalHotkeys, 'dialogsHotkeys=', dialogsHotkeys);
@@ -82,12 +88,19 @@
             // Create dialog hotkeys
             let dialogsHotkeysEls = Array.from(document.querySelectorAll('[data-knw-hotkeys-dialog]') || []);
             const dialogsHotkeys = dialogsHotkeysEls.map((dialogsHotkeysEl, index) => {
-                const dialogsHotkeysElKeys = dialogsHotkeysEl.querySelectorAll('[data-knw-hotkeys-dialog-key]');
-                const hotkeys = new KeynavWeb.Hotkeys({
+                // WAY 1: custom
+                // const dialogsHotkeysElKeys = dialogsHotkeysEl.querySelectorAll('[data-knw-hotkeys-dialog-key]');
+                // const hotkeys = new KeynavWeb.Hotkeys({
+                //     containerEl: dialogsHotkeysEl,
+                //     items: dialogsHotkeysElKeys, 
+                //     selectorHotkeys: 'data-knw-hotkeys-dialog-key',
+                //     isGlobal: false, 
+                //     isActive: false
+                // });
+                // WAY 2: builder
+                const hotkeys = KeynavWeb.Hotkeys.buildDialog({
                     containerEl: dialogsHotkeysEl,
-                    items: dialogsHotkeysElKeys, 
-                    isGlobal: false, 
-                    isActive: false
+                    selectorHotkeys: '[data-knw-hotkeys-dialog-key]'
                 });
                 doSomething({itemsList: dialogsHotkeysElKeys, output:`.hotkeytest-dialog-output${index+1}`});
                 return hotkeys;
@@ -101,7 +114,9 @@
                 dialogsHotkeys[1].pub({ topic: 'knw.hotkeys.activateDialog' });
                 console.log('Test Dialog2: globalHotkeys=', globalHotkeys, 'dialogsHotkeys=', dialogsHotkeys);
             };
+
         });
+
 
         function doSomething({items, output, itemsList}) {
             let itemEls = itemsList || Array.from(document.querySelectorAll(items));
