@@ -87,7 +87,7 @@
             // Test Dialogs
             // Create dialog hotkeys
             let dialogsHotkeysEls = Array.from(document.querySelectorAll('[data-knw-hotkeys-dialog]') || []);
-            const dialogsHotkeys = dialogsHotkeysEls.map((dialogsHotkeysEl, index) => {
+            const dialogsHotkeys = dialogsHotkeysEls.map((dialogsHotkeysEl, index, arrayThis) => {
                 // WAY 1: custom
                 // const dialogsHotkeysElKeys = dialogsHotkeysEl.querySelectorAll('[data-knw-hotkeys-dialog-key]');
                 // const hotkeys = new KeynavWeb.Hotkeys({
@@ -102,13 +102,16 @@
                     containerEl: dialogsHotkeysEl,
                     selectorHotkeys: '[data-knw-hotkeys-dialog-key]'
                 });
-
+                
+                // Add a focus trap to the dialog to keep tabs in the dialog
                 const focusTrap = new KeynavWeb.FocusTrap({
                     containerEl: dialogsHotkeysEl
                 });
-                console.log('focusTrap=', focusTrap);
 
-                doSomething({itemsList: dialogsHotkeysEls, output:`.hotkeytest-dialog-output${index+1}`});
+                // Show any keyed keys
+                const dialogsHotkeysElKeys = dialogsHotkeysEl.querySelectorAll('[data-knw-hotkeys-dialog-key]');
+                doSomething({itemsList: dialogsHotkeysElKeys, output:`.hotkeytest-dialog-output${index+1}`});
+                
                 return hotkeys;
             });
             // Enable/Disable Dialogs by button
