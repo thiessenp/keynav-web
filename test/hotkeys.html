@@ -107,11 +107,12 @@
                 const focusTrap = new KeynavWeb.FocusTrap({
                     containerEl: dialogsHotkeysEl
                 });
+                // console.log(focusTrap);
 
                 // Show any keyed keys
                 const dialogsHotkeysElKeys = dialogsHotkeysEl.querySelectorAll('[data-knw-hotkeys-dialog-key]');
                 doSomething({itemsList: dialogsHotkeysElKeys, output:`.hotkeytest-dialog-output${index+1}`});
-                
+
                 return hotkeys;
             });
             // Enable/Disable Dialogs by button
