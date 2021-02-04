@@ -5,8 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "webpack-cli --watch --config webpack.config.js",
-    "build": "webpack --mode=production",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run test && webpack --mode=production",
+    "test": "eslint . --fix"
   },
   "repository": {
     "type": "git",
@@ -18,11 +18,13 @@
     "url": "https://github.com/thiessenp/keynav-web/issues"
   },
   "homepage": "https://github.com/thiessenp/keynav-web#readme",
-  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@babel/preset-env": "^7.12.7",
+    "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.1",
+    "eslint": "^7.19.0",
+    "eslint-config-google": "^0.14.0",
     "lodash": "^4.17.20",
     "webpack": "^5.6.0",
     "webpack-cli": "^4.2.0"
@@ -46,6 +48,37 @@
       ]
     ]
   },
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "google"
+    ],
+    "env": {
+      "node": true,
+      "browser": true
+    },
+    "parser": "babel-eslint",
+    "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "module"
+    },
+    "rules": {
+      "max-len": [
+        2,
+        120,
+        4,
+        {
+          "ignoreUrls": true
+        }
+      ],
+      "no-console": 0
+    }
+  },
+  "eslintIgnore": [
+    "node_modules",
+    "dist",
+    "test"
+  ],
   "files": [
     "dist",
     "lib"
