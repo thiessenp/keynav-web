@@ -1,83 +1,62 @@
 # keynav-web
 keyboard navigation for web based UIs.
 
-*TODO Fix hotkeys*
 *TODO IE11 support using babel*
 
-## Keynav for Lists
+## Keynav Modules/Components
 
-Adds Keyboard navigation to HTML elements through data attributes.
+### List Navigation (custom SELECT)
 
-User behavior would be tabbing to the container UL and then keying down and 
-up through the list element. Once in the list, tabbing again would either 
-navigate to a tabable element in that list item or the next tabable element 
-in the DOM.
+Adds Keyboard navigation similar to a native SELECT element on a custom element. So when a user tabs to the custom element, then up/down/left/right/space/enter keys have the same behavior. Tabbing again taks the user to the next focusable element.
 
-Example Usage:
+Example:
 ```
-// JS: Once DOM ready
+// JS
 const listSimple1 = new KeynavWeb.ListNav({
     listEl: document.querySelector('.listSimple1'),
     listItemsSelector: '.listSimple1 > li'
 });
-
-// JS: Add Behavior?
-// Each list item has a listener to trigger a click on keying Enter or Space.
-// This way any click listeners on a list element would fire.
-doSomething({items:'.listSimple1 > li', output:'.listSimple1-output'});
-
-// HTML: add keynav to a list using data-knw-keynav-list
-...
-<div class="listSimple2" aria-labelledby="listSimple2-label">
-    <div><span>List Item A</span></div>
-    <div><span>List Item B</span></div>
-    <div><span>List Item C</span></div>
-</div>
-...
+// HTML
+<ol class="listSimple1" ...
+    <li>List Item A</li>
+    <li>List Item B</li>
+</ol>
 ```
 
-## Keynav for Hotkeys
-Creates a list of hotkeys from the data attributes in the DOM. The list maps each hotkey to an element to be used for triggering. 
+Full Example See: `./test/list.html`
+
+### Hotkeys
+
+Adds the convienience of mapping data-attributes to event listeners that when Keyed fire a click on that element. So it's still up to you to add whatever should happen when the keyed element is "clicked".
 
 Example:
 ```
-// JavaScript Add hotkeys (searched from DOM)
-KeynavWeb.hotkeys.init();
-
-// Example: adds hotkey 'x'. When 'x' is keyed, the link is clicked
-<li data-hotkey-web="x">
-    <a class="hotkey-web-x" href="#x">Hotkey 'x' triggers me</a>
-</li>
-
-// Example: adds hotkey 'x' with Custom CSS Mapping. When x is keyed
-// the element with the matching CSS selector is clicked.
-<li data-hotkey-web="x" data-hotkey-web-selector=".hotkey-web-x">
-    <a class="hotkey-web-x" href="#x">Hotkey 'x' triggers me</a>
-</li>
+// JS
+const globalHotkeys = KeynavWeb.Hotkeys.buildGlobal({
+    selectorHotkeys: '[data-knw-hotkeys-key]'       // selector can be an attribute or class
+});
+// HTML
+<button data-knw-hotkeys-key='a'>Key a</button>     <!--keying 'a' would click the button -->
+<button data-knw-hotkeys-key='b'>Key b</button>
 ```
 
-## Development
+Full Example See: `./test/hotkeys.html`
 
-Note: Webpack has trouble importing projects created with Webpack, so includes the source in publish. BUT this ran into a Webpack error also where it would not run the babel-loader for imported libs. BUTx2 the built webpack project seems to be working as an import in another webpack project... "le sigh..." So, remove this from the package.json for now: 
+### Focus Trap
+
+Traps tabbing withing an element. So you can <kbd>tab</kbd> forward or <kbd>shift+tab</kbd> on any focussable item within the element BUT not outside it. This is probably only useful in modal dialogs or similar and probably used alongside with Hotkeys.
+
+Example:
 ```
-// this alows projects that use the import ES6 style to auto chose the lib src -- TODO: add back later
-"module": "lib/index.js",
+// JS
+const focusTrap = new KeynavWeb.FocusTrap({     // e.g. when opening the dialog
+    containerEl: document.querySelector('.my-dialog')
+});
+focusTrap.remove();     // e.g. when closing the dialog
 ```
 
-### Test/Example
+Full Example See: `./test/hotkeys.html`
 
-Run a quick test/example by loading `./test/test.html` in a server and trying keynav.
+## Tests (examples)
 
-### Publishing
-
-On windows, powershell has trouble with executing npm scripts so use Command 
-Prompt:
-
-```
-// build first
-// note: remember to semantically bump package.json version
-npm run build
-
-npm login
-npm publish
-```
+For example to help testing (especially for ATs like screen readers), see: `./test/
