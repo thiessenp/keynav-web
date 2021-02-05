@@ -78,7 +78,8 @@
   "eslintIgnore": [
     "node_modules",
     "dist",
-    "test"
+    "test",
+    "lib/list-nav-configurable.js"
   ],
   "files": [
     "dist",
