@@ -2,11 +2,11 @@
 <html lang="en-us">
 <head>
     <meta charset="utf-8">
-    <title>Keynav Tests</title>
+    <title>Keynav-Web: List Tests</title>
 </head>
 <body>
 
-    <h1>Keynav: List Tests</h1>
+    <h1>Keynav-Web: List Tests</h1>
 
     <p>Navigate lists with <kbd>up/down/left/right/home/end</kbd>. Activate a list item with <kbd>Enter</kbd> (or Click). Delete a list item with <kbd>del</kbd> and test key combinations with either <kbd>Shift+ArrowRight</kbd> or <kbd>Ctrl+Enter</kbd>.</p>
     <p>NOTE: ListNav recommended for most cases. It is simpler and uses delegation so lists can be dynamic. ListNavConfigurable is complex, uses static lists but can be comletely customize keys and actions.</p>
@@ -33,7 +33,7 @@
         <output aria-label="List item activated" aria-live="polite" aria-relevant="additions" class="listSimple2-output"/>
     </section>
 
-    <section aria-labelledby="listComplex1-label">
+    <!-- <section aria-labelledby="listComplex1-label">
         <h3 id="listComplex1-label">ListNavConfigurable using data-attribute selectors with UL and LI's</h3>
         <ul class="listComplex1-list" aria-labelledby="listComplex1-label" data-knw-list>
             <li>Not In List</li>
@@ -52,7 +52,7 @@
             <div data-knw-list-item>List Item C</div>
         </ul>
         <output aria-label="List item activated" aria-live="polite" aria-relevant="additions" class="listComplex2-output"></output>
-    </section>
+    </section> -->
 
     <!-- 
         CORS... must load file on Server for modules (ES does XHR req for mods):
@@ -85,41 +85,41 @@
             });
             doSomething({items: '.listSimple2 > div span', output:'.listSimple2-output'});
 
-            // TODO: listComplex1
-            KeynavWeb.ListNavConfigurableBuilder({
-                //EXAMPLE: custom callbacks
-                activateCb: function({item}) {
-                    console.log('Custom Test: activateCb, item=', item);
-                    if (!item) { return; }
-                    // Only update if el is not currently active, avoids DOM confusion
-                    if(item.getAttribute('tabindex') !== '0') {
-                        // // Remove any old state to make way for the New Active!
-                        // this.removeActive();
-                        item.setAttribute('tabindex', '0');
-                    }
-                },
-                //EXAMPLE: Key overrides
-                customKeys: {
-                    NEXT: {
-                        keys: ['ArrowDown', 'ArrowRight'],
-                        // WARNING: run must NOT be an arrow function because would get bound to wrong `this`
-                        run: function(e) {
-                            e.preventDefault();
-                            const next = this.getNext(e.target);
-                            this.focusCb({item: next});
-                            console.log('Custom Test: ArrowDown/ArrowRight test, next=', next);
-                        }
-                    },
-                    TEST: {
-                        keys: ['Shift+ArrowRight', 'Ctrl+Enter'],
-                        run: function(e) {
-                            alert('TEST! either ' + 'Shift+ArrowRight or ' + 'Ctrl+Enter');
-                        }
-                    }
-                }
-            });
-            doSomething({items: '.listComplex1-list [data-knw-list-item]', output:'.listComplex1-output'});
-            doSomething({items: '.listComplex2-list [data-knw-list-item]', output:'.listComplex2-output'});
+            // // TODO: listComplex1
+            // KeynavWeb.ListNavConfigurableBuilder({
+            //     //EXAMPLE: custom callbacks
+            //     activateCb: function({item}) {
+            //         console.log('Custom Test: activateCb, item=', item);
+            //         if (!item) { return; }
+            //         // Only update if el is not currently active, avoids DOM confusion
+            //         if(item.getAttribute('tabindex') !== '0') {
+            //             // // Remove any old state to make way for the New Active!
+            //             // this.removeActive();
+            //             item.setAttribute('tabindex', '0');
+            //         }
+            //     },
+            //     //EXAMPLE: Key overrides
+            //     customKeys: {
+            //         NEXT: {
+            //             keys: ['ArrowDown', 'ArrowRight'],
+            //             // WARNING: run must NOT be an arrow function because would get bound to wrong `this`
+            //             run: function(e) {
+            //                 e.preventDefault();
+            //                 const next = this.getNext(e.target);
+            //                 this.focusCb({item: next});
+            //                 console.log('Custom Test: ArrowDown/ArrowRight test, next=', next);
+            //             }
+            //         },
+            //         TEST: {
+            //             keys: ['Shift+ArrowRight', 'Ctrl+Enter'],
+            //             run: function(e) {
+            //                 alert('TEST! either ' + 'Shift+ArrowRight or ' + 'Ctrl+Enter');
+            //             }
+            //         }
+            //     }
+            // });
+            // doSomething({items: '.listComplex1-list [data-knw-list-item]', output:'.listComplex1-output'});
+            // doSomething({items: '.listComplex2-list [data-knw-list-item]', output:'.listComplex2-output'});
         });
 
         //

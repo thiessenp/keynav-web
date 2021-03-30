@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <title>Keynav-Web: Keynav Tests</title>
+</head>
+<body>
+
+    <h1>Keynav-Web: List Tests</h1>
+
+    <section aria-labelledby="keynav1-label">
+        <h2 id="keynav1-label">List with default keys</h2>
+        <p>Keynav legend below</p>
+        <ul>
+            <li>Activate Item: <kbd>enter</kbd> or <kbd>space</kbd> (or click)</li>
+            <li>Next Item: <kbd>down</kbd> or <kbd>right</kbd></li>
+            <li>Previous Item: <kbd>up</kbd> or <kbd>left</kbd></li>
+            <li>Start of Items: <kbd>home</kbd></li>
+            <li>End of Items: <kbd>end</kbd></li>
+            <li>Remove Item: <kbd>del</kbd> <strong>(TODO fix cache) </strong></li>
+        </ul>
+        <p>Navigate the list using the above keys</p>
+        <ul class="keynav1-list" aria-labelledby="keynav1-label" data-knw-list>
+            <li>List Item A</li>
+            <li>List Item B</li>
+            <li>List Item C</li>
+        </ul>
+        <output aria-label="List item activated" aria-live="polite" aria-relevant="additions" class="keynav1-output"><em>(key actions will be outputted here)</em></output>
+    </section>
+
+    <section aria-labelledby="keynav2-label">
+        <h2 id="keynav1-label">List with custom keys</h2>
+        <p>Keynav legend below</p>
+        <ul>
+            <li>(Custom) Next Item: <kbd>down</kbd> (not right)</li>
+            <li>(Custom) Test Alert: <kbd>Shift + ArrowRight</kbd> or <kbd>Ctrl + Enter</kbd></li>
+            <li>Activate Item: <kbd>enter</kbd> or <kbd>space</kbd> (or click)</li>
+            <li>Previous Item: <kbd>up</kbd> or <kbd>left</kbd></li>
+            <li>Start of Items: <kbd>home</kbd></li>
+            <li>End of Items: <kbd>end</kbd></li>
+            <li>Remove Item: <kbd>del</kbd> <strong>(TODO fix cache) </strong></li>
+        </ul>
+        <p>Navigate the list using the above keys</p>
+        <ul class="keynav2-list" aria-labelledby="keynav2-label" data-knw-list>
+            <li>Not In List</li>
+            <li tabindex="-1" data-knw-list-item>List Item B</li>
+            <li data-knw-list-item>List Item C (start missing tabindex)</li>
+            <li tabindex="0" data-knw-list-item>List Item A (start tabindex=0")</li>
+        </ul>
+        <output aria-label="List item activated" aria-live="polite" aria-relevant="additions" class="keynav2-output"><em>(key actions will be outputted here)</em></output>
+    </section>
+
+
+    <!-- 
+        CORS... must load file on Server for modules (ES does XHR req for mods):
+        <script type="module" src="../keynav-web.js"></script>
+        <script type="module">
+            import KeynavWeb from '../index.js';
+            ...my code
+
+        Would be a pain why below script ...
+     -->
+    <script src="../dist/index.js"></script>
+    <script>
+        console.log('KeynavWeb=', KeynavWeb);
+        console.log('KeynavWeb.List=', KeynavWeb.Keynav);
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // EXAMPLE: Keynav default keys
+            const keynav1 = new KeynavWeb.Keynav({
+                listEl: document.querySelector('.keynav1-list'),
+                listItemsSelector: '.keynav1-list > li',
+            });
+            doSomething({items: '.keynav1-list > li', output:'.keynav1-output'});
+
+
+            // EXAMPLE: Keynav custom keys
+            const keynav2 = new KeynavWeb.Keynav({
+                listEl: document.querySelector('.keynav2-list'),
+                
+                listItemsSelector: '.keynav2-list [data-knw-list-item]',
+
+                //EXAMPLE: custom callbacks
+                activateCb: function({item}) {
+                    console.log('Custom Test: activateCb, item=', item);
+                    if (!item) { return; }
+                    // Only update if el is not currently active, avoids DOM confusion
+                    if(item.getAttribute('tabindex') !== '0') {
+                        // // Remove any old state to make way for the New Active!
+                        // this.removeActive();
+                        item.setAttribute('tabindex', '0');
+                    }
+                },
+                
+                //EXAMPLE: Custom Key overrides
+                customKeys: {
+                    // Next now ONLY uses the DOWN arrow and NOT the right key as well
+                    NEXT: {
+                        keys: ['ArrowDown'],
+                        // WARNING: run must NOT be an arrow function because would get bound to wrong `this`
+                        run: function(e) {
+                            e.preventDefault();
+                            const next = this.getNext(e.target);
+                            this.focusCb({item: next});
+                            console.log('Custom Test: ArrowDown/ArrowRight test, next=', next);
+                        }
+                    },
+                    // Actions can have any name, what matters more is the keys
+                    TEST: {
+                        keys: ['Shift+ArrowRight', 'Ctrl+Enter'],
+                        run: function(e) {
+                            alert('TEST! either ' + 'Shift+ArrowRight or ' + 'Ctrl+Enter');
+                        }
+                    }
+                }
+            });
+
+            doSomething({items: '.keynav2-list [data-knw-list-item]', output:'.keynav2-output'});
+        });
+
+
+        //
+        // Add custom behavior to test Above hotkeys and keynav
+        //
+        function doSomething({items, output}) {
+            let itemEls = Array.from(document.querySelectorAll(items));
+            let outputEl = document.querySelector(output);
+
+            itemEls.forEach(function(itemEl) {
+                itemEl.addEventListener('click', function(e) {
+                    // innerHtml only updated DOM not text it seems?
+                    // el.innerHtml = content;
+                    // e.target.textContent = content;
+                    outputEl.textContent = `You clicked: ${e.target.textContent}`;
+                });
+            });
+        }
+    </script>
+</body>
+</html>
