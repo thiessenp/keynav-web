@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <title>Keynav-Web: KeyAction Tests</title>
+
+    <style>
+        .keyaction2 { 
+            display: inline-block;
+            padding: 1em; 
+            border: dashed 1px #ccc; 
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Keynav-Web: KeyAction Tests</h1>
+
+    <section aria-labelledby="keyaction1-label">
+        <h2 id="keyaction1-label">KeyAction on a Button</h2>
+        <p>Keynav legend below</p>
+        <ul>
+            <li>Activate Item: <kbd>enter</kbd> or <kbd>space</kbd> or <kbd>ArrowDown</kbd> (or click)</li>
+        </ul>
+        <p>Activate the button using the above keys</p>
+        <button class="keyaction1">Key Action 1</button>
+        <!-- <ul class="keynav1-list" aria-labelledby="keynav1-label" data-knw-list>
+            <li>List Item A</li>
+            <li>List Item B</li>
+            <li>List Item C</li>
+        </ul> -->
+        <output aria-label="List item activated" aria-live="polite" aria-relevant="additions" class="keyaction1-output"><em>(key actions will be outputted here)</em></output>
+    </section>
+
+    <section aria-labelledby="keyaction2-label">
+        <h2 id="keyaction2-label">KeyAction on a Div</h2>
+        <p>Keynav legend below</p>
+        <ul>
+            <li>Activate Item: <kbd>enter</kbd> or <kbd>space</kbd> (or click)</li>
+        </ul>
+        <p>Activate the button using the above keys</p>
+        <div class="keyaction2" tabindex="0">Key Action 2</div>
+        <!-- <ul class="keynav1-list" aria-labelledby="keynav1-label" data-knw-list>
+            <li>List Item A</li>
+            <li>List Item B</li>
+            <li>List Item C</li>
+        </ul> -->
+        <output aria-label="List item activated" aria-live="polite" aria-relevant="additions" class="keyaction2-output"><em>(key actions will be outputted here)</em></output>
+    </section>
+
+
+
+    <!-- 
+        CORS... must load file on Server for modules (ES does XHR req for mods):
+        <script type="module" src="../keynav-web.js"></script>
+        <script type="module">
+            import KeynavWeb from '../index.js';
+            ...my code
+
+        Would be a pain why below script ...
+     -->
+    <script src="../dist/index.js"></script>
+    <script>
+        console.log('KeynavWeb=', KeynavWeb);
+        console.log('KeynavWeb.KeyAction=', KeynavWeb.KeyAction);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // EXAMPLE: KeyAction custom keys
+            const keyAction1 = new KeynavWeb.KeyAction({
+                itemEl: document.querySelector('.keyaction1'),
+                customKeys: {
+                    ACTIVATE: {
+                        keys: ['Enter', 'Space', 'ArrowDown'],
+                        // NOTE: Could use arrow functions here but since cannot in as a
+                        // passed prop, using normal function for clarity.
+                        run: function(e) {
+                            // Stop unwanted browser default behavior like scrolling when arrowing around
+                            e.preventDefault();
+                            const item = e.target;
+                            // Click done here so can use setActive in getClick without x2 click problem
+                            if (item) {
+                                item.click();
+                            }
+                        },
+                    }
+                }
+            });
+
+            doSomething({items: '.keyaction1', output:'.keyaction1-output'});
+
+            const keyAction2 = new KeynavWeb.KeyAction({
+                itemEl: document.querySelector('.keyaction2')
+            });
+
+            doSomething({items: '.keyaction2', output:'.keyaction2-output'});
+        });
+
+
+        //
+        // Add custom behavior to test Above hotkeys and keynav
+        //
+        function doSomething({items, output}) {
+            let itemEls = Array.from(document.querySelectorAll(items));
+            let outputEl = document.querySelector(output);
+
+            itemEls.forEach(function(itemEl) {
+                itemEl.addEventListener('click', function(e) {
+                    // innerHtml only updated DOM not text it seems?
+                    // el.innerHtml = content;
+                    // e.target.textContent = content;
+                    outputEl.textContent = `You keyed (or clicked): ${e.target.textContent}`;
+                });
+            });
+        }
+    </script>
+</body>
+</html>
